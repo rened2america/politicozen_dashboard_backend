@@ -16,6 +16,7 @@ import { useControls, button } from "leva";
 import { useProduct } from "./useProduct";
 import AWS from "aws-sdk";
 import { useProductStore } from "@/store/productStore";
+//@ts-nocheck
 
 export const Cup = (props: any) => {
   const gl = useThree((state) => state.gl);

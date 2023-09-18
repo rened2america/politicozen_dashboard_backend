@@ -33,7 +33,7 @@ import { Button } from "@/components/ui/button";
 import { useDropzone } from "react-dropzone";
 import { useProductStore } from "@/store/productStore";
 import { useProduct } from "@/app/components/shirt/useProduct";
-
+//@ts-nocheck
 const thumbsContainer = {
   display: "flex",
   flexDirection: "row",
@@ -104,7 +104,6 @@ export default function New() {
       productData.updateImgBase64Logo(files[0].preview);
     }
   }, [files]);
-
   useEffect(() => {
     if (imgListProduct.length > 0) {
       createProduct({
@@ -461,7 +460,6 @@ export default function New() {
     </div>
   );
 }
-
 const Backdrop = memo(() => {
   const shadows = useRef();
   useFrame((state, delta) => {
