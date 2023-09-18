@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api/1/";
+const BASE_URL = "https://politicozen-backend.onrender.com/api/1/";
 
 export const fetchInstance = () => {
   const post = async (url: string, body: object) => {

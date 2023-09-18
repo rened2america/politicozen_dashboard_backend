@@ -15,73 +15,51 @@ import {
 import { useControls, button } from "leva";
 import { useProduct } from "./useProduct";
 import AWS from "aws-sdk";
+import { useProductStore } from "@/store/productStore";
 
 export const Cup = (props: any) => {
   const gl = useThree((state) => state.gl);
   const [pos, setXYZ] = useState([0, 0, 0.1]);
   const [rot, setRot] = useState([0, 0, 0]);
+  const position = useProductStore((state) => {
+    return { x: state.x, y: state.y, z: state.z };
+  });
+  const angle = useProductStore((state) => state.angle);
+  const updatePosition = useProductStore((state) => state.updatePosition);
+  const updateAngle = useProductStore((state) => state.updateAngle);
+  const image = useProductStore((state) => state.imgLogo);
+
+  console.log("position:", position);
   const { mutate: createProduct } = useProduct();
   // @ts-ignore
   const { nodes, materials } = useGLTF("/shirt_baked.glb");
 
-  const { debug, image, scale, name } = useControls({
-    debug: false,
-    name: {
-      value: "Hola",
-    },
-    image: { image: "/1200px-Starbucks_Logo_ab_2011.svg.png" },
-    scale: { value: 0.2, min: 0.12, max: 0.4 },
-    save: button(async () => {
-      const link = document.createElement("a");
-      link.setAttribute("download", "canvas.png");
-      console.log("Nombre", name);
-      const imgLogo = await blobUrlToBase64(image);
-      //@ts-ignore
-      createProduct({
-        name,
-        imgProduct: gl.domElement.toDataURL("image/png"),
-        imgLogo: imgLogo,
-      });
-    }),
-  });
-
-  function blobUrlToBase64(blobUrl: any) {
-    return new Promise((resolve, reject) => {
-      // Realiza una solicitud para obtener el Blob
-      fetch(blobUrl)
-        .then((response) => response.blob())
-        .then((blob) => {
-          // Convierte el Blob en un ArrayBuffer
-          console.log(blob);
-          var reader = new FileReader();
-          reader.readAsArrayBuffer(blob);
-          reader.onload = function () {
-            // Convierte el ArrayBuffer en una cadena base64
-            var base64data = arrayBufferToBase64(reader.result);
-            resolve(base64data);
-          };
-          reader.onerror = function () {
-            reject(new Error("Error al leer el Blob como ArrayBuffer"));
-          };
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  }
-
-  // Función para convertir un ArrayBuffer en una cadena base64
-  function arrayBufferToBase64(buffer: any) {
-    var binary = "";
-    var bytes = new Uint8Array(buffer);
-    for (var i = 0; i < bytes.byteLength; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return btoa(binary);
-  }
+  // const { debug, scale, name } = useControls({
+  //   debug: false,
+  //   name: {
+  //     value: "",
+  //   },
+  //   image: { image: "/1200px-Starbucks_Logo_ab_2011.svg.png" },
+  //   scale: { value: 0.2, min: 0.12, max: 0.4 },
+  //   save: button(async () => {
+  //     const link = document.createElement("a");
+  //     link.setAttribute("download", "canvas.png");
+  //     console.log("Nombre", name);
+  //     console.log(image);
+  //     const imgLogo = await blobUrlToBase64(image);
+  //     console.log(imgLogo);
+  //     //@ts-ignore
+  //     // createProduct({
+  //     //   name,
+  //     //   imgProduct: gl.domElement.toDataURL("image/png"),
+  //     //   imgLogo: imgLogo,
+  //     // });
+  //   }),
+  // });
+  console.log(image);
 
   // Ejemplo de uso
-
+  console.log(rot);
   return (
     <>
       <mesh
@@ -108,27 +86,26 @@ export const Cup = (props: any) => {
                 if (y < -0.2649047726189107) return -0.2649047726189107;
                 return y;
               };
-              const position = new THREE.Vector3();
+              const newposition = new THREE.Vector3();
               const scale = new THREE.Vector3();
               const quaternion = new THREE.Quaternion();
-              local.decompose(position, quaternion, scale);
+              local.decompose(newposition, quaternion, scale);
               const rotation = new THREE.Euler().setFromQuaternion(quaternion);
 
-              setXYZ([
-                minAndMaxX(position.x),
-                minAndMaxY(position.y),
-                position.z + 0.1,
-              ]);
-              setRot([rotation.x, rotation.y, rotation.z]);
+              updatePosition({
+                x: minAndMaxX(newposition.x),
+                y: minAndMaxY(newposition.y),
+                z: newposition.z + 0.1,
+              });
+              updateAngle(rotation.z);
             }}
           />
         </group>
 
         <Decal
-          debug={debug}
-          position={pos}
-          rotation={rot}
-          scale={0.6 * scale}
+          position={[position.x, position.y, position.z]}
+          rotation={[0, 0, angle]}
+          scale={0.15}
           map={useTexture(image)}
         />
       </mesh>

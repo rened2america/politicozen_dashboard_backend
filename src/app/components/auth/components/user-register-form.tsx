@@ -9,18 +9,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUserLogin } from "@/app/login/useUserLogin";
 import { useRouter } from "next/navigation";
+import { useUserRegister } from "@/app/register/useUserRegister";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const { data, isLoading, mutate: login, isSuccess, isError } = useUserLogin();
+export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
+  const {
+    data,
+    isLoading,
+    mutate: register,
+    isSuccess,
+    isError,
+  } = useUserRegister();
   const [email, setEmail] = React.useState("");
   const [pass, setPass] = React.useState("");
+  const [name, setName] = React.useState("");
 
   const router = useRouter();
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    login({ email: email, password: pass });
+    register({ name, email: email, password: pass });
   }
 
   React.useEffect(() => {
@@ -33,6 +41,21 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="email">
+              Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="Patrick Jane"
+              type="name"
+              autoCapitalize="none"
+              autoComplete="name"
+              autoCorrect="off"
+              disabled={isLoading}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
@@ -65,7 +88,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </div>
           <Button disabled={isLoading}>
             {isLoading && <h1>Spiner</h1>}
-            Sign In with Email
+            Create Account
           </Button>
         </div>
       </form>

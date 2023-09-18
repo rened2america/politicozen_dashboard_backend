@@ -4,6 +4,11 @@ type ProductData = {
   imgLogo: any;
   imgProduct: string;
   name: string;
+  imgListProduct: string[];
+  product: string;
+  x: number;
+  y: number;
+  angle: number;
 };
 
 const postProductData = async (data: ProductData) => {

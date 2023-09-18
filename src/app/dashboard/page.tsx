@@ -19,7 +19,7 @@ export default function Home() {
   // const { data, isLoading } = useQuery({
   //   queryKey: ["products"],
   //   queryFn: () =>
-  //     fetch("http://localhost:4000/api/1/product/all", {
+  //     fetch("https://politicozen-backend.onrender.com/api/1/product/all", {
   //       credentials: "include",
   //     }).then((res) => res.json()),
   // });

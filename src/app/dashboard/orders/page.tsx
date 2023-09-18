@@ -27,27 +27,7 @@ export default function Orders() {
             <h2 className="text-2xl font-bold tracking-tight">Orders</h2>
           </div>
         </div>
-        <DataTable
-          data={[
-            {
-              id: "TASK-8782",
-              title:
-                "You can't compress the program without quantifying the open-source SSD pixel!",
-              status: "in progress",
-              label: "documentation",
-              priority: "medium",
-            },
-            {
-              id: "TASK-8782",
-              title:
-                "You can't compress the program without quantifying the open-source SSD pixel!",
-              status: "in progress",
-              label: "documentation",
-              priority: "medium",
-            },
-          ]}
-          columns={columns}
-        />
+        <DataTable data={[]} columns={columns} />
       </div>
     </Container>
     // <Container>

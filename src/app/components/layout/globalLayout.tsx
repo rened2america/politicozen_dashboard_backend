@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import styles from "./globalLayout.module.css";
 import {
@@ -8,7 +9,6 @@ import {
   Heading,
   Text,
   Avatar,
-  Button,
   Strong,
 } from "@radix-ui/themes";
 import {
@@ -19,6 +19,7 @@ import {
   ExitIcon,
 } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function GlobalLayout({
   children,
@@ -30,41 +31,76 @@ export default function GlobalLayout({
       <div className={styles.nav}>
         <Flex align="center" justify="center">
           <div className={styles.logo}>
-            <Avatar size="2" src="/LogoWhite.png" fallback="R" />
+            <Avatar size="2" src="/LogoBlack.png" fallback="R" />
           </div>
         </Flex>
         <div className={styles.sectionMenu}>
           <div className={styles.newProduct}>
-            <Button variant="soft" size="2">
-              <PlusCircledIcon width="16" height="16" />
-              New Product
-            </Button>
+            <Link href="/dashboard/product/new">
+              <Button
+                style={{
+                  height: "35px",
+                  display: "grid",
+                  gap: "5px",
+                  gridTemplateColumns: "16px 1fr",
+                }}
+              >
+                <PlusCircledIcon width="16" height="16" />
+                New Product
+              </Button>
+            </Link>
           </div>
           <div className={styles.list}>
             <Link href="/dashboard">
-              <Button variant="ghost">
-                <HomeIcon width="16" height="16" /> Home
+              <Button
+                style={{
+                  display: "grid",
+                  gap: "16px",
+                  gridTemplateColumns: "16px 1fr",
+                  width: "138px",
+                  justifyItems: "start",
+                }}
+                variant="ghost"
+              >
+                <HomeIcon width="16" height="16" /> <span>Home</span>
               </Button>
             </Link>
             <Link href="/dashboard/products">
-              <Button variant="ghost">
-                <CubeIcon width="16" height="16" /> Products
+              <Button
+                style={{
+                  display: "grid",
+                  gap: "16px",
+                  gridTemplateColumns: "16px 1fr",
+                  width: "138px",
+                  justifyItems: "start",
+                }}
+                variant="ghost"
+              >
+                <CubeIcon width="16" height="16" />
+                <span>Products</span>
               </Button>
             </Link>
             <Link href="/dashboard/orders">
-              <Button variant="ghost">
-                <StackIcon width="16" height="16" /> Orders
+              <Button
+                style={{
+                  display: "grid",
+                  gap: "16px",
+                  gridTemplateColumns: "16px 1fr",
+                  width: "138px",
+                  justifyItems: "start",
+                }}
+                variant="ghost"
+              >
+                <StackIcon width="16" height="16" /> <span>Orders</span>
               </Button>
             </Link>
           </div>
         </div>
         <div className={styles.buttomSection}>
-          <Avatar
-            size="3"
-            src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?&w=64&h=64&dpr=2&q=70&crop=focalpoint&fp-x=0.5&fp-y=0.3&fp-z=1&fit=crop"
-            fallback="R"
-          />
-          <ExitIcon />
+          <Avatar size="4" radius="full" fallback="F" />
+          <button>
+            <ExitIcon />
+          </button>
         </div>
       </div>
       <div className={styles.section}> {children}</div>
