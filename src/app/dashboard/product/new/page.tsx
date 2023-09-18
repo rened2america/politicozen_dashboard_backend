@@ -460,8 +460,9 @@ export default function New() {
     </div>
   );
 }
-const Backdrop = memo(() => {
+const Backdrop = memo<any>(() => {
   const shadows = useRef();
+  //@ts-ignore
   useFrame((state, delta) => {
     easing.dampC(
       shadows.current.getMesh().material.color,
@@ -470,6 +471,7 @@ const Backdrop = memo(() => {
       delta
     );
   });
+  //@ts-ignore
   return (
     <AccumulativeShadows
       ref={shadows}
