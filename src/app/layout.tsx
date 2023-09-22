@@ -21,14 +21,14 @@ export default function RootLayout({
     <ReactQueryProvider>
       <html lang="en">
         <body className={inter.className}>
-          <Theme
+          {/* <Theme
             // appearance="dark"
             accentColor="gray"
             grayColor="slate"
             panelBackground="solid"
-          >
-            {children}
-          </Theme>
+          > */}
+          {children}
+          {/* </Theme> */}
         </body>
       </html>
     </ReactQueryProvider>
