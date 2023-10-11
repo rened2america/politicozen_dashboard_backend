@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Overview } from "../components/dashboard/components/overview";
 import { RecentSales } from "../components/dashboard/components/recent-sales";
+import { useGetProducts } from "./products/useProduct";
 type Product = {
   id: string;
 };
@@ -29,6 +30,9 @@ export default function Home() {
   // if (isLoading) {
   //   return <h1>Cargando</h1>;
   // }
+
+  const { data } = useGetProducts();
+  console.log(data);
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

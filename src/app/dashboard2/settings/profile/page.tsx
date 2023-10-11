@@ -1,20 +1,69 @@
+"use client";
+import { PageTitle } from "@/common/components/generic/PageTitle/PageTitle";
+import { PageLayout } from "@/common/layouts/PageLayout/PageLayout";
+import { useDropzone } from "react-dropzone";
+import {
+  useGetProfile,
+  useUpdateProfile,
+  useUploadAvatar,
+  useUploadBanner,
+} from "./useProfile";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 const Profile = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const { mutate: updateProfile } = useUpdateProfile();
+  const onSubmit = (data: any) => updateProfile(data);
+
+  const { refetch, data, isLoading } = useGetProfile();
+  const { mutate: uploadAvatar, isSuccess: isSuccessAvatar } =
+    useUploadAvatar();
+  const { mutate: uploadBanner, isSuccess: isSuccessBanner } =
+    useUploadBanner();
+  const {
+    getInputProps: getInputPropsAvatar,
+    getRootProps: getRootPropsAvatar,
+  } = useDropzone({
+    multiple: false,
+    accept: {
+      "image/*": [],
+    },
+    onDrop: (acceptedFiles) => {
+      console.log("acceptedFiles", acceptedFiles[0]);
+      const formData = new FormData();
+      formData.append("avatar", acceptedFiles[0]);
+      uploadAvatar(formData);
+    },
+  });
+
+  const {
+    getInputProps: getInputPropsBanner,
+    getRootProps: getRootPropsBanner,
+  } = useDropzone({
+    multiple: false,
+    accept: {
+      "image/*": [],
+    },
+    onDrop: (acceptedFiles) => {
+      console.log("acceptedFiles", acceptedFiles[0]);
+      const formData = new FormData();
+      formData.append("banner", acceptedFiles[0]);
+      uploadBanner(formData);
+    },
+  });
+  useEffect(() => {
+    refetch();
+  }, [isSuccessAvatar, isSuccessBanner]);
+
   return (
-    <section
-      style={{
-        padding: "0 48px 48px",
-      }}
-    >
-      <header
-        style={{
-          color: "#15171a",
-          fontSize: "32px",
-          fontWeight: "700",
-          padding: "24px 0px",
-        }}
-      >
-        Rene Alberto Meza Escamilla
-      </header>
+    <PageLayout>
+      <PageTitle>{data?.data.getArtist.name}</PageTitle>
       <section>
         <form
           style={{
@@ -25,14 +74,36 @@ const Profile = () => {
         >
           <figure
             style={{
-              backgroundImage:
-                "url(https://assets.ghost.io/admin/1585/assets/img/user-cover-e8f42b12b5fcba292a8b5dfa81e13dd2.png)",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              position: "relative",
+              backgroundImage: data?.data.getArtist.banner
+                ? `url(${data?.data.getArtist.banner})`
+                : "url(https://assets.ghost.io/admin/1585/assets/img/user-cover-e8f42b12b5fcba292a8b5dfa81e13dd2.png)",
             }}
-          ></figure>
+          >
+            <div
+              style={{
+                display: "grid",
+                alignItems: "center",
+                justifyItems: "center",
+                margin: "16px 16px",
+                padding: "8px 16px",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                color: "white",
+                position: "absolute",
+                borderRadius: "4px",
+              }}
+              {...getRootPropsBanner({ className: "dropzone" })}
+            >
+              <input {...getInputPropsBanner()} />
+              Change cover
+            </div>
+          </figure>
           <figure
             style={{
-              width: "120px",
-              height: "120px",
+              width: "150px",
+              height: "150px",
               position: "absolute",
               top: "236px",
               left: "0px",
@@ -44,19 +115,37 @@ const Profile = () => {
             <div
               style={{
                 backgroundSize: "cover",
-                backgroundImage:
-                  "url(https://assets.ghost.io/admin/1585/assets/img/user-image-639a88b784fb5f10964be8b975ca9fdf.png)",
+                backgroundImage: data?.data.getArtist.avatar
+                  ? `url(${data?.data.getArtist.avatar})`
+                  : "url(https://assets.ghost.io/admin/1585/assets/img/user-image-639a88b784fb5f10964be8b975ca9fdf.png)",
                 width: "100%",
                 height: "100%",
                 backgroundPosition: "50%",
                 borderRadius: "9999px",
+                backgroundColor: "white",
               }}
             ></div>
+            <div
+              style={{
+                display: "grid",
+                alignItems: "center",
+                justifyItems: "center",
+                padding: "8px 16px",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                color: "white",
+                borderRadius: "4px",
+                marginTop: "8px",
+              }}
+              {...getRootPropsAvatar({ className: "dropzone" })}
+            >
+              <input {...getInputPropsAvatar()} />
+              Change image
+            </div>
           </figure>
           <div
             style={{
               border: "1px solid #e6e9eb",
-              marginTop: "80px",
+              marginTop: "144px",
               display: "grid",
               gridTemplateRows: "1fr",
               borderRadius: "12px",
@@ -84,7 +173,7 @@ const Profile = () => {
                 display: "grid",
                 gridTemplateRows: "100px 100px 100px",
                 gap: "16px",
-                margin: "0 auto",
+                margin: "16px auto",
                 width: "100%",
               }}
             >
@@ -105,16 +194,20 @@ const Profile = () => {
                 >
                   Full name
                 </label>
-                <input
-                  id="user-name"
-                  style={{
-                    height: "40px",
-                    padding: "6px 12px",
-                    border: "1px solid #dddedf",
-                    borderRadius: "4px",
-                    width: "100%",
-                  }}
-                />
+                {isLoading ? null : (
+                  <input
+                    id="user-name"
+                    style={{
+                      height: "40px",
+                      padding: "6px 12px",
+                      border: "1px solid #dddedf",
+                      borderRadius: "4px",
+                      width: "100%",
+                    }}
+                    {...register("name")}
+                    defaultValue={data?.data.getArtist.name}
+                  />
+                )}
                 <p
                   style={{
                     fontSize: "13px",
@@ -142,16 +235,20 @@ const Profile = () => {
                 >
                   Email
                 </label>
-                <input
-                  id="user-name"
-                  style={{
-                    height: "40px",
-                    padding: "6px 12px",
-                    border: "1px solid #dddedf",
-                    borderRadius: "4px",
-                    width: "100%",
-                  }}
-                />
+                {isLoading ? null : (
+                  <input
+                    id="user-name"
+                    style={{
+                      height: "40px",
+                      padding: "6px 12px",
+                      border: "1px solid #dddedf",
+                      borderRadius: "4px",
+                      width: "100%",
+                    }}
+                    disabled
+                    value={data?.data.getArtist.email}
+                  />
+                )}
                 <p
                   style={{
                     fontSize: "13px",
@@ -190,6 +287,8 @@ const Profile = () => {
                     borderRadius: "4px",
                     width: "100%",
                   }}
+                  {...register("bio")}
+                  defaultValue={data?.data.getArtist.bio}
                 />
                 <p
                   style={{
@@ -225,7 +324,7 @@ const Profile = () => {
                 display: "grid",
                 gridTemplateRows: "100px 100px 100px",
                 gap: "16px",
-                margin: "0 auto",
+                margin: "16px auto",
                 width: "100%",
               }}
             >
@@ -246,16 +345,20 @@ const Profile = () => {
                 >
                   Instagram
                 </label>
-                <input
-                  id="user-name"
-                  style={{
-                    height: "40px",
-                    padding: "6px 12px",
-                    border: "1px solid #dddedf",
-                    borderRadius: "4px",
-                    width: "100%",
-                  }}
-                />
+                {isLoading ? null : (
+                  <input
+                    id="user-name"
+                    style={{
+                      height: "40px",
+                      padding: "6px 12px",
+                      border: "1px solid #dddedf",
+                      borderRadius: "4px",
+                      width: "100%",
+                    }}
+                    {...register("instagram")}
+                    defaultValue={data?.data.getArtist.instagram}
+                  />
+                )}
                 <p
                   style={{
                     fontSize: "13px",
@@ -283,16 +386,20 @@ const Profile = () => {
                 >
                   Facebook
                 </label>
-                <input
-                  id="user-name"
-                  style={{
-                    height: "40px",
-                    padding: "6px 12px",
-                    border: "1px solid #dddedf",
-                    borderRadius: "4px",
-                    width: "100%",
-                  }}
-                />
+                {isLoading ? null : (
+                  <input
+                    id="user-name"
+                    style={{
+                      height: "40px",
+                      padding: "6px 12px",
+                      border: "1px solid #dddedf",
+                      borderRadius: "4px",
+                      width: "100%",
+                    }}
+                    {...register("facebook")}
+                    defaultValue={data?.data.getArtist.facebook}
+                  />
+                )}
                 <p
                   style={{
                     fontSize: "13px",
@@ -303,12 +410,73 @@ const Profile = () => {
                   URL of your personal Facebook
                 </p>
               </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateRows: "16px 48px 16px",
+                  alignItems: "center",
+                }}
+              >
+                <label
+                  htmlFor="user-name"
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    color: "#15171a",
+                  }}
+                >
+                  Twitter
+                </label>
+                {isLoading ? null : (
+                  <input
+                    id="user-name"
+                    style={{
+                      height: "40px",
+                      padding: "6px 12px",
+                      border: "1px solid #dddedf",
+                      borderRadius: "4px",
+                      width: "100%",
+                    }}
+                    {...register("twitter")}
+                    defaultValue={data?.data.getArtist.twitter}
+                  />
+                )}
+                <p
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: "400",
+                    color: "#738393",
+                  }}
+                >
+                  URL of your personal twitter
+                </p>
+              </div>
             </fieldset>
           </div>
         </form>
         <form></form>
       </section>
-    </section>
+      <div
+        style={{
+          display: "grid",
+          alignItems: "center",
+          justifyItems: "center",
+          width: "56px",
+          height: "56px",
+          position: "fixed",
+          bottom: "24px",
+          right: "64px",
+          backgroundColor: "black",
+          borderRadius: "8px",
+          color: "white",
+          fontSize: "14px",
+          fontWeight: "700",
+        }}
+        onClick={handleSubmit(onSubmit)}
+      >
+        Save
+      </div>
+    </PageLayout>
   );
 };
 export default Profile;

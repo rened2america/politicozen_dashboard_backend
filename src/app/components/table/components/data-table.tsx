@@ -27,15 +27,18 @@ import {
 
 import { DataTablePagination } from "../components/data-table-pagination";
 import { DataTableToolbar } from "../components/data-table-toolbar";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -91,7 +94,16 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Loading...
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -113,7 +125,79 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "grid",
+                      justifyItems: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "grid",
+                        padding: "32px 16px",
+                        justifyItems: "center",
+                        alignItems: "center",
+                        width: "300px",
+                        gridTemplateRows: "24px 40px 24px 40px",
+                        gap: "8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "16px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Welcome to your Products
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "700",
+                          color: "#a5aeb7",
+                        }}
+                      >
+                        You'll find products here once you create one.
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "13px",
+                          fontWeight: "500",
+                          color: "#a5aeb7",
+                        }}
+                      >
+                        Go create your first product
+                      </div>
+                      <div
+                        style={{
+                          display: "grid",
+                          alignItems: "center",
+                          justifyItems: "center",
+                          fontSize: "14px",
+                          fontWeight: "700",
+                          backgroundColor: "#fff27a",
+                          width: "80%",
+                          height: "40px",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        <Link
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "grid",
+                            alignItems: "center",
+                            justifyItems: "center",
+                          }}
+                          href="/dashboard2/product/new"
+                        >
+                          Create product
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </TableCell>
               </TableRow>
             )}

@@ -1,15 +1,23 @@
 import axios, { HeadersDefaults } from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:4000/api/1/",
+  baseURL: "https://politicozen-backend.onrender.com/api/1/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
   withCredentials: true,
 });
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 403) {
+      window.location.href = "/emailnotconfirm";
+    }
 
-// Replace this with our own backend base URL
-axiosClient.defaults.baseURL = "http://localhost:4000/api/1/";
-
+    if (error.response.status === 401) {
+      window.location.href = "/login";
+    }
+  }
+);
 export default axiosClient;

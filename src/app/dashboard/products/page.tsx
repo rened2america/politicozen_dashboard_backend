@@ -22,10 +22,6 @@ import { useGetProducts } from "./useProduct";
 export default function Products() {
   const { isLoading, data, isSuccess } = useGetProducts();
 
-  if (isLoading) {
-    return <h1>Cargando</h1>;
-  }
-
   console.log(data?.data.products);
   return (
     <Container>
@@ -51,7 +47,11 @@ export default function Products() {
             <h2 className="text-2xl font-bold tracking-tight">Products</h2>
           </div>
         </div>
-        <DataTable data={data?.data.products} columns={columns} />
+        <DataTable
+          data={data?.data.products}
+          columns={columns}
+          isLoading={isLoading}
+        />
       </div>
     </Container>
     // <Container>

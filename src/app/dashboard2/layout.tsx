@@ -7,6 +7,8 @@ import { Avatar } from "@/common/components/primitives/Avatar/Avatar";
 import { FC, ReactNode } from "react";
 import { IconOrders } from "@/common/components/icons/IconOrder";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useGetProfile } from "./settings/profile/useProfile";
 
 type NewLayout = {
   children: ReactNode;
@@ -14,14 +16,15 @@ type NewLayout = {
 
 const NewLayout: FC<NewLayout> = ({ children }) => {
   const pathname = usePathname();
-  console.log(pathname);
+  const { data, isLoading } = useGetProfile();
+
   return (
     <div
       style={{
         maxHeight: "100%",
         height: "100%",
         display: "grid",
-        gridTemplateColumns: "200px 1fr",
+        gridTemplateColumns: "224px 1fr",
       }}
     >
       <nav
@@ -56,9 +59,10 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
                 lineHeight: "1.3rem",
                 fontWeight: "700",
                 color: "#15171a",
+                width: "120px",
               }}
             >
-              Rene Alberto Meza Escamilla
+              {data?.data.getArtist.name}
             </div>
           </div>
         </header>
@@ -109,6 +113,42 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
                 <IconOrders />
                 Orders
               </NavLink>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                alignItems: "center",
+                justifyItems: "center",
+                height: "100px",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  alignItems: "center",
+                  justifyItems: "center",
+                  fontSize: "14px",
+                  fontWeight: "700",
+                  backgroundColor: "#fff27a",
+                  width: "80%",
+                  height: "40px",
+                  borderRadius: "8px",
+                }}
+              >
+                <Link
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "grid",
+                    alignItems: "center",
+                    justifyItems: "center",
+                  }}
+                  href="/dashboard2/product/new"
+                >
+                  Create product
+                </Link>
+              </div>
             </div>
           </div>
           <footer

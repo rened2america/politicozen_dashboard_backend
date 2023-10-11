@@ -1,7 +1,7 @@
 export const IconArrowDown = () => {
   return (
     <svg
-      style={{ width: "24px", height: "24px" }}
+      style={{ width: "20px", height: "20px" }}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >

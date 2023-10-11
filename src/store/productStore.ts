@@ -3,28 +3,63 @@ import { create } from "zustand";
 const initialState = {
   imgLogo: "/1200px-Starbucks_Logo_ab_2011.svg.png",
   imgBase64Logo: "",
-  imgProduct: [],
+  imgProduct: {
+    white: "",
+    beige: "",
+    red: "",
+    blue: "",
+    black: "",
+  },
+  colorsSelected: {
+    white: true,
+    beige: true,
+    red: true,
+    blue: true,
+    black: true,
+  },
   name: "",
+  subtitle: "",
+  description: "",
   product: "",
-  color: "",
+  color: "#f0f8ff",
   x: 0,
   y: 0,
   z: 0.1,
   angle: 0,
   height: 0,
   width: 0,
-  scale: 0,
+  scale: 0.1,
   save: false,
+  menuDesign: "Product",
+  openToast: false,
+  transitionProduct: "creation",
+  resetProductColor: false,
+  selectModel: "Shirt",
+};
+
+type TimgProduct = {
+  white: string;
+  beige: string;
+  red: string;
+  blue: string;
+  black: string;
+};
+
+type TcolorsSelected = {
+  white: boolean;
+  beige: boolean;
+  red: boolean;
+  blue: boolean;
+  black: boolean;
 };
 
 export const useProductStore = create((set) => {
   return {
     ...initialState,
-    addNewImgProduct: (imgProduct: string) => {
+    addNewImgProduct: (imgProduct: TimgProduct) => {
       set((state: any) => {
         return {
-          ...state,
-          imgProduct: [...state.imgProduct, imgProduct],
+          imgProduct: { ...state.imgProduct, ...imgProduct },
         };
       });
     },
@@ -48,11 +83,31 @@ export const useProductStore = create((set) => {
     },
 
     updateColor: (color: string) => set({ color }),
+    updateSelectModel: (selectModel: string) => set({ selectModel }),
+
+    updateResetProductColor: (resetProductColor: boolean) =>
+      set({ resetProductColor }),
+    updateColorsSelected: (colorsSelected: string) =>
+      set((state) => {
+        return {
+          colorsSelected: {
+            ...state.colorsSelected,
+            ...{ [colorsSelected]: !state.colorsSelected[colorsSelected] },
+          },
+        };
+      }),
     updateName: (name: string) => set({ name }),
+    updateSubtitle: (subtitle: string) => set({ subtitle }),
+    updateDescription: (description: string) => set({ description }),
     updateProduct: (product: string) => set({ product }),
     updateImgLogo: (imgLogo: string) => set({ imgLogo }),
     updateSave: (save: boolean) => set({ save }),
     updateAngle: (angle: number) => set({ angle }),
+    updateScale: (scale: number) => set({ scale }),
+    updateMenuDesign: (menuDesign: string) => set({ menuDesign }),
+    updateOpenToast: (openToast: boolean) => set({ openToast }),
+    updateTransitionProduct: (transitionProduct: string) =>
+      set({ transitionProduct }),
     updateImgBase64Logo: async (imgBase64Logo: string) => {
       function blobUrlToBase64(blobUrl: any) {
         return new Promise((resolve, reject) => {
@@ -67,6 +122,7 @@ export const useProductStore = create((set) => {
               reader.onload = function () {
                 // Convierte el ArrayBuffer en una cadena base64
                 var base64data = arrayBufferToBase64(reader.result);
+                console.log("imgLogo", base64data);
                 resolve(base64data);
               };
               reader.onerror = function () {

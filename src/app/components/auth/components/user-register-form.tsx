@@ -33,7 +33,7 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
 
   React.useEffect(() => {
     if (isSuccess) {
-      router.push("/dashboard");
+      router.push("/dashboard2");
     }
   }, [isSuccess]);
 

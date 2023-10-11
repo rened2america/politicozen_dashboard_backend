@@ -4,11 +4,28 @@ type ProductData = {
   imgLogo: any;
   imgProduct: string;
   name: string;
-  imgListProduct: string[];
+  subtitle: string;
+  description: string;
+  imgListProduct: {
+    white: string;
+    beige: string;
+    red: string;
+    blue: string;
+    black: string;
+  };
+  colorsSelected: {
+    white: boolean;
+    beige: boolean;
+    red: boolean;
+    blue: boolean;
+    black: boolean;
+  };
   product: string;
   x: number;
   y: number;
   angle: number;
+  scale: number;
+  type: string;
 };
 
 const postProductData = async (data: ProductData) => {
