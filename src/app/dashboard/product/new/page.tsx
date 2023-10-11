@@ -227,7 +227,7 @@ export default function New() {
         >
           <ambientLight intensity={0.5} />
           <directionalLight intensity={0.5} position={[10, 10, 10]} />
-          <Cup scale={2} position={[0, 0, 0]} />
+          {/* <Cup scale={2} position={[0, 0, 0]} /> */}
           <AccumulativeShadows
             temporal
             frames={100}
