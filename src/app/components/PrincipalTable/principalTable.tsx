@@ -33,6 +33,7 @@ const options = {
       grid: {
         display: false,
       },
+      min: 0,
     },
   },
   responsive: true,
@@ -51,7 +52,7 @@ const data = {
     {
       fill: true,
       label: "Sales",
-      data: [768, 528, 564, 0, 0],
+      data: [0, 0, 0, 0, 0],
       borderColor: "rgb(195 183 67)",
       backgroundColor: "rgb(255 242 122)",
     },
