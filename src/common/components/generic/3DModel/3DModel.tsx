@@ -1,6 +1,10 @@
 "use client";
 import { Hoddie } from "@/app/components/hoodie/hoodie";
+import { Mug } from "@/app/components/mug/mug";
 import { Object3D } from "@/app/components/shirt/shirt";
+import { Sweatshirt } from "@/app/components/sweatshirt/sweatshirt";
+import { NewHoodie } from "@/app/components/newhoodie/newHoodie";
+
 import { useProductStore } from "@/store/productStore";
 import {
   AccumulativeShadows,
@@ -18,7 +22,11 @@ export const Model = () => {
       gl={{ preserveDrawingBuffer: true }}
       orthographic
       // camera={{ position: [0, 0, 2.5], fov: 25, zoom: 400 }}
-      camera={{ position: [0, 0, 2.5], fov: 25, zoom: 500 }}
+      camera={{
+        position: [0, 0, 2.5],
+        fov: 25,
+        zoom: 500,
+      }}
       style={{ background: "#f2f4f7", borderRadius: "32px" }}
     >
       <ambientLight intensity={0.5} />
@@ -26,10 +34,13 @@ export const Model = () => {
       <Environment preset="city" />
       {selectModel === "Shirt" ? (
         <Object3D scale={2} position={[0, 0, 0]} />
+      ) : selectModel === "Hoodie" ? (
+        <NewHoodie />
+      ) : selectModel == "Sweatshirt" ? (
+        <Sweatshirt />
       ) : (
-        <Hoddie />
+        <Mug />
       )}
-
       <AccumulativeShadows
         temporal
         frames={100}

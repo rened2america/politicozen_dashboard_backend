@@ -7,20 +7,25 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import "./nstyle.css";
 import { useGetSignout } from "@/service/queryHooks/useSignout";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useGetProfile } from "@/app/dashboard2/settings/profile/useProfile";
 export const Avatar = () => {
   const { isSuccess, refetch } = useGetSignout();
   const { data, isLoading } = useGetProfile();
+  const router = useRouter();
   console.log(data?.data.name);
   useEffect(() => {
     if (isSuccess) {
-      redirect("/login");
+      window.location.replace("http://localhost:3000/login");
     }
   }, [isSuccess]);
 
   const getInitialFromName = (LocalIsLoading: boolean, userName: string) => {
     if (LocalIsLoading) {
+      return "";
+    }
+
+    if (!userName) {
       return "";
     }
 

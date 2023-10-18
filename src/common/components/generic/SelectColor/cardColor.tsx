@@ -3,7 +3,7 @@ import { IconEye } from "../../icons/IconEye";
 import { useProductStore } from "@/store/productStore";
 
 const DEFAULT_COLORS = {
-  white: "#f0f8ff",
+  white: "white",
   beige: "#F3E5AB",
   red: "#FF0000",
   blue: "#4169e1",

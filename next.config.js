@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "politicozen-test.s3.us-east-2.amazonaws.com",
+      },
+    ],
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

@@ -8,16 +8,24 @@ import { UserAuthForm } from "../components/auth/components/user-auth-form";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { useGetUserIsLogin } from "@/hooks/useUserLogin";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { data, isLoading, mutate: login, isSuccess, isError } = useUserLogin();
+  // const { isSuccess: userIsLogin } = useGetUserIsLogin();
+
+  // useEffect(() => {
+  //   if (userIsLogin) {
+  //     router.push("/dashboard2");
+  //   }
+  // }, [userIsLogin]);
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/dashboard");
+      router.push("/dashboard2");
     }
   }, [isSuccess]);
 

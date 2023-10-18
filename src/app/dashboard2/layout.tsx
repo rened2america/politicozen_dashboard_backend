@@ -9,6 +9,7 @@ import { IconOrders } from "@/common/components/icons/IconOrder";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useGetProfile } from "./settings/profile/useProfile";
+import SyncLoader from "react-spinners/SyncLoader";
 
 type NewLayout = {
   children: ReactNode;
@@ -17,7 +18,20 @@ type NewLayout = {
 const NewLayout: FC<NewLayout> = ({ children }) => {
   const pathname = usePathname();
   const { data, isLoading } = useGetProfile();
-
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "grid",
+          placeItems: "center",
+          height: "100vh",
+          width: "100%",
+        }}
+      >
+        <SyncLoader loading={isLoading} />
+      </div>
+    );
+  }
   return (
     <div
       style={{
@@ -130,10 +144,11 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
                   justifyItems: "center",
                   fontSize: "14px",
                   fontWeight: "700",
-                  backgroundColor: "#fff27a",
+                  backgroundColor: "black",
                   width: "80%",
                   height: "40px",
                   borderRadius: "8px",
+                  color: "white",
                 }}
               >
                 <Link

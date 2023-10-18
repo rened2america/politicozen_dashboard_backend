@@ -32,9 +32,11 @@ export const DesignProperties = () => {
     return {
       x: state.x,
       y: state.y,
+      z: state.z,
     };
   });
   const angle = useProductStore((state) => state.angle);
+  const selectModel = useProductStore((state) => state.selectModel);
 
   return (
     <MenuPropertiesLayout>

@@ -11,6 +11,7 @@ export const MenuPropertiesLayout: FC<TMenuPropertiesLayout> = ({
     <div
       style={{
         height: "100%",
+        maxHeight: "600px",
         width: "240px",
         backgroundColor: "white",
         borderRadius: "24px",

@@ -65,7 +65,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Price" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("price")}</div>,
+    cell: ({ row }) => <div className="w-[80px]">${row.getValue("price")}</div>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -83,5 +83,9 @@ export const columns: ColumnDef<Task>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];

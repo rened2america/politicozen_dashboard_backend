@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const initialState = {
-  imgLogo: "/1200px-Starbucks_Logo_ab_2011.svg.png",
+  imgLogo: "/LogoBlack.png",
   imgBase64Logo: "",
   imgProduct: {
     white: "",
@@ -34,7 +34,8 @@ const initialState = {
   openToast: false,
   transitionProduct: "creation",
   resetProductColor: false,
-  selectModel: "Shirt",
+  selectModel: "Sweatshirt",
+  tags: [],
 };
 
 type TimgProduct = {
@@ -84,6 +85,7 @@ export const useProductStore = create((set) => {
 
     updateColor: (color: string) => set({ color }),
     updateSelectModel: (selectModel: string) => set({ selectModel }),
+    updateTags: (tags: string) => set({ tags }),
 
     updateResetProductColor: (resetProductColor: boolean) =>
       set({ resetProductColor }),

@@ -28,6 +28,7 @@ import {
 import { DataTablePagination } from "../components/data-table-pagination";
 import { DataTableToolbar } from "../components/data-table-toolbar";
 import Link from "next/link";
+import SyncLoader from "react-spinners/SyncLoader";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -100,7 +101,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Loading...
+                  <SyncLoader loading={isLoading} color="black" />
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (

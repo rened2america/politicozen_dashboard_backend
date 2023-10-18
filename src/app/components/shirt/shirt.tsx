@@ -54,6 +54,7 @@ export const Object3D = (props: any) => {
 
   const updateOpenToast = useProductStore((state) => state.updateOpenToast);
   const openToast = useProductStore((state) => state.openToast);
+  const tags = useProductStore((state) => state.tags);
 
   const transitionProduct = useProductStore((state) => state.transitionProduct);
 
@@ -108,6 +109,7 @@ export const Object3D = (props: any) => {
         subtitle,
         description,
         type: "Shirt",
+        tags,
       });
       updateTransitionProduct("saving");
 
@@ -237,6 +239,7 @@ export const Object3D = (props: any) => {
         {...props}
         material-aoMapIntensity={1}
         dispose={null}
+        scale={1.5}
       >
         {save ? null : (
           <group position={[0, 0, 0.5]}>

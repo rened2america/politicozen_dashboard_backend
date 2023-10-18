@@ -10,7 +10,8 @@ import {
 } from "./useProfile";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Profile = () => {
   const {
     register,
@@ -18,7 +19,7 @@ const Profile = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const { mutate: updateProfile } = useUpdateProfile();
+  const { mutate: updateProfile, isSuccess } = useUpdateProfile();
   const onSubmit = (data: any) => updateProfile(data);
 
   const { refetch, data, isLoading } = useGetProfile();
@@ -61,6 +62,21 @@ const Profile = () => {
     refetch();
   }, [isSuccessAvatar, isSuccessBanner]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Updated profile ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }, [isSuccess]);
+
   return (
     <PageLayout>
       <PageTitle>{data?.data.getArtist.name}</PageTitle>
@@ -93,6 +109,7 @@ const Profile = () => {
                 color: "white",
                 position: "absolute",
                 borderRadius: "4px",
+                cursor: "pointer",
               }}
               {...getRootPropsBanner({ className: "dropzone" })}
             >
@@ -135,6 +152,7 @@ const Profile = () => {
                 color: "white",
                 borderRadius: "4px",
                 marginTop: "8px",
+                cursor: "pointer",
               }}
               {...getRootPropsAvatar({ className: "dropzone" })}
             >
@@ -461,8 +479,8 @@ const Profile = () => {
           display: "grid",
           alignItems: "center",
           justifyItems: "center",
-          width: "56px",
-          height: "56px",
+          width: "88px",
+          height: "40px",
           position: "fixed",
           bottom: "24px",
           right: "64px",
@@ -471,11 +489,24 @@ const Profile = () => {
           color: "white",
           fontSize: "14px",
           fontWeight: "700",
+          cursor: "pointer",
         }}
         onClick={handleSubmit(onSubmit)}
       >
         Save
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </PageLayout>
   );
 };

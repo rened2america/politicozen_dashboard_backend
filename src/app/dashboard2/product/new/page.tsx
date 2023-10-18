@@ -11,13 +11,53 @@ import { IconDesign } from "@/common/components/icons/IconDesign";
 import { IconNotification } from "@/common/components/icons/IconNotification";
 import { useProductStore } from "@/store/productStore";
 import * as Toast from "@radix-ui/react-toast";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const NewProdut = () => {
   const menu = useProductStore((state) => state.menuDesign);
   const updateMenuDesign = useProductStore((state) => state.updateMenuDesign);
   const updateSave = useProductStore((state) => state.updateSave);
   const openToast = useProductStore((state) => state.openToast);
   const transitionProduct = useProductStore((state) => state.transitionProduct);
+  const imgLogo = useProductStore((state) => state.imgLogo);
+  const name = useProductStore((state) => state.name);
+  const tags = useProductStore((state) => state.tags);
+  const verifySubmit = () => {
+    let isError = false;
+    console.log("tags", name);
+    let errorText = "Error: Missing required parameters";
+    if (name.length < 4) {
+      isError = true;
+      errorText = errorText + ", Name";
+    }
+
+    if (tags.length > 3) {
+      isError = true;
+
+      errorText = errorText + ", Max 3 tags";
+    }
+
+    if (imgLogo === "/LogoBlack.png") {
+      isError = true;
+
+      errorText = errorText + ", Logo";
+    }
+
+    if (isError) {
+      toast.error(errorText, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      updateSave(true);
+    }
+  };
 
   return (
     <div
@@ -141,9 +181,7 @@ const NewProdut = () => {
                 fontSize: "14px",
                 fontWeight: "700",
               }}
-              onClick={() => {
-                updateSave(true);
-              }}
+              onClick={verifySubmit}
             >
               Save and publish
             </div>
@@ -239,6 +277,18 @@ const NewProdut = () => {
             <DesignProperties />
           )}
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </section>
     </div>
   );

@@ -11,11 +11,23 @@ const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 403) {
-      window.location.href = "/emailnotconfirm";
+    console.log("errordata", error.response.data.message === "confirm email");
+    if (
+      error.response.status === 403 &&
+      error.response.data.message === "confirm email"
+    ) {
+      window.location.href = "/emailconfirm/token";
+    }
+
+    if (
+      error.response.status === 403 &&
+      error.response.data.message === "verify artist"
+    ) {
+      window.location.href = "/verifyartist/token";
     }
 
     if (error.response.status === 401) {
+      console.log("error.response.status === 401", error);
       window.location.href = "/login";
     }
   }

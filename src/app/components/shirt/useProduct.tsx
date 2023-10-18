@@ -26,6 +26,7 @@ type ProductData = {
   angle: number;
   scale: number;
   type: string;
+  tags: string[];
 };
 
 const postProductData = async (data: ProductData) => {

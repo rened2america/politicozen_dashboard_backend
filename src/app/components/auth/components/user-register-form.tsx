@@ -10,36 +10,37 @@ import { Label } from "@/components/ui/label";
 import { useUserLogin } from "@/app/login/useUserLogin";
 import { useRouter } from "next/navigation";
 import { useUserRegister } from "@/app/register/useUserRegister";
+import { useForm, SubmitHandler } from "react-hook-form";
+import SyncLoader from "react-spinners/SyncLoader";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
   const {
     data,
     isLoading,
-    mutate: register,
+    mutate: registerUser,
     isSuccess,
     isError,
   } = useUserRegister();
-  const [email, setEmail] = React.useState("");
-  const [pass, setPass] = React.useState("");
-  const [name, setName] = React.useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => registerUser({ ...data });
 
   const router = useRouter();
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-    register({ name, email: email, password: pass });
-  }
 
   React.useEffect(() => {
     if (isSuccess) {
-      router.push("/dashboard2");
+      router.push("/login");
     }
   }, [isSuccess]);
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -53,8 +54,9 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="name"
               autoCorrect="off"
               disabled={isLoading}
-              onChange={(event) => setName(event.target.value)}
+              {...register("name", { required: true, min: 3 })}
             />
+            {errors.name && <span>name is required, min 3 letters </span>}
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -68,8 +70,9 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
-              onChange={(event) => setEmail(event.target.value)}
+              {...register("email", { required: true })}
             />
+            {errors.email && <span>email is required</span>}
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
@@ -83,12 +86,16 @@ export function UserRegisterForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
-              onChange={(event) => setPass(event.target.value)}
+              {...register("password", { required: true })}
             />
+            {errors.password && <span>password is required</span>}
           </div>
           <Button disabled={isLoading}>
-            {isLoading && <h1>Spiner</h1>}
-            Create Account
+            {isLoading ? (
+              <SyncLoader loading={isLoading} color="white" />
+            ) : (
+              "Create Account"
+            )}
           </Button>
         </div>
       </form>
