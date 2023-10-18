@@ -3,8 +3,8 @@ import { Hoddie } from "@/app/components/hoodie/hoodie";
 import { Mug } from "@/app/components/mug/mug";
 import { Object3D } from "@/app/components/shirt/shirt";
 import { Sweatshirt } from "@/app/components/sweatshirt/sweatshirt";
-import { NewHoodie } from "@/app/components/newhoodie/newHoodie";
-
+// import { NewHoodie } from "@/app/components/newhoodie/newHoodie";
+import { NewHoodie } from "@/app/components/newHoodie/newHoodie";
 import { useProductStore } from "@/store/productStore";
 import {
   AccumulativeShadows,
