@@ -1,7 +1,7 @@
 import axios, { HeadersDefaults } from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "https://politicozen-backend.onrender.com/api/1/",
+  baseURL: process.env.BASE_URL_BACKEND || "http://localhost:4000/api/1/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
