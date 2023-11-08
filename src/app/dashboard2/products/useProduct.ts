@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "@/service/axiosInstance";
 
 const getProductsData = async () => {
@@ -47,5 +47,10 @@ const deleteProductData = async (product: any) => {
 };
 
 export const useDeleteProduct = () => {
-  return useMutation((product: any) => deleteProductData(product), {});
+  const queryClient = useQueryClient();
+  return useMutation((product: any) => deleteProductData(product), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["products"]); // Asumiendo que 'products' es la clave de la lista de productos
+    },
+  });
 };

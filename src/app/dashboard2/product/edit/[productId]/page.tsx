@@ -18,7 +18,6 @@ import SyncLoader from "react-spinners/SyncLoader";
 
 const EditProduct = ({ params }: { params: { productId: string } }) => {
   const router = useRouter();
-
   const {
     data,
     isLoading,
@@ -34,6 +33,7 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
   } = useForm();
   const [selected, setSelected] = useState<string[]>([]);
   const onSubmit = (data) => mutate({ ...data, tags: selected });
+  console.log(data?.data.products);
 
   useEffect(() => {
     if (!isLoading) {
@@ -340,8 +340,9 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
               <div>Sizes</div>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "40px 40px 40px",
+                  display: "flex",
+                  flexDirection: "row",
+                  // gridTemplateColumns: "48px 48px 48px",
                   gap: "8px",
                 }}
               >
@@ -351,7 +352,7 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                       <div
                         key={size.id}
                         style={{
-                          width: "40px",
+                          width: "48px",
                           height: "24px",
                           border: "1px solid black",
                           display: "grid",
@@ -367,9 +368,10 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
               <div> Color</div>
               <div
                 style={{
-                  display: "grid",
+                  display: "flex",
                   fontSize: "14px",
-                  gridTemplateColumns: "48px 48px 48px 48px 48px",
+                  // gridTemplateColumns: "repeat(auto-fit , minmax(48px, 1fr))",
+                  flexDirection: "row",
                   gap: "8px",
                 }}
               >

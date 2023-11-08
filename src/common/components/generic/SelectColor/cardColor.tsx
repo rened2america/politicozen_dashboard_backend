@@ -7,7 +7,7 @@ const DEFAULT_COLORS = {
   beige: "#F3E5AB",
   red: "#FF0000",
   blue: "#4169e1",
-  black: "#000000",
+  black: "#313131",
 };
 
 export const CardColor: FC<{ color: string; colorName: string }> = ({
@@ -73,6 +73,7 @@ export const CardColor: FC<{ color: string; colorName: string }> = ({
       <div
         style={{
           display: "grid",
+          cursor: "pointer",
         }}
         onClick={() => {
           updateColor(DEFAULT_COLORS[color]);

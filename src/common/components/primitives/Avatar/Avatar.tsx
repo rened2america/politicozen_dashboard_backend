@@ -16,7 +16,9 @@ export const Avatar = () => {
   console.log(data?.data.name);
   useEffect(() => {
     if (isSuccess) {
-      window.location.replace("https://app.politicozen.dev/login");
+      window.location.replace(
+        `${process.env.NEXT_PUBLIC_BASE_URL_DASHBOARD}login`
+      );
     }
   }, [isSuccess]);
 
