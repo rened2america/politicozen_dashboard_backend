@@ -25,7 +25,7 @@ const DEFAULT_COLORS = {
   beige: "#F3E5AB",
   red: "#FF0000",
   blue: "#4169e1",
-  black: "#000000",
+  black: "#313131",
 };
 
 export const Object3D = (props: any) => {

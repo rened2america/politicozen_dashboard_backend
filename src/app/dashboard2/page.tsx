@@ -80,13 +80,6 @@ const NewHome = () => {
             >
               ${orders?.data.amount}
             </div>
-            <div
-              style={{
-                fontSize: "13px",
-              }}
-            >
-              +20.1% from last month
-            </div>
           </div>
         </div>
         <div
@@ -126,14 +119,6 @@ const NewHome = () => {
               }}
             >
               {orders?.data.countSales}
-            </div>
-            <div
-              style={{
-                fontSize: "13px",
-                color: "white",
-              }}
-            >
-              +16% from last month
             </div>
           </div>
         </div>

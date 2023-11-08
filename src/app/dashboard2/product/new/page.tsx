@@ -102,11 +102,13 @@ const NewProdut = () => {
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
                       fontWeight: "700",
+                      cursor: "pointer",
                     }
                   : {
                       display: "grid",
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
+                      cursor: "pointer",
                     }
               }
               onClick={() => {
@@ -123,11 +125,13 @@ const NewProdut = () => {
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
                       fontWeight: "700",
+                      cursor: "pointer",
                     }
                   : {
                       display: "grid",
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
+                      cursor: "pointer",
                     }
               }
               onClick={() => {
@@ -144,11 +148,13 @@ const NewProdut = () => {
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
                       fontWeight: "700",
+                      cursor: "pointer",
                     }
                   : {
                       display: "grid",
                       gridTemplateColumns: "24px 1fr",
                       alignItems: "center",
+                      cursor: "pointer",
                     }
               }
               onClick={() => {
@@ -180,6 +186,7 @@ const NewProdut = () => {
                 alignItems: "center",
                 fontSize: "14px",
                 fontWeight: "700",
+                cursor: "pointer",
               }}
               onClick={verifySubmit}
             >
