@@ -24,7 +24,6 @@ const NewProdut = () => {
   const tags = useProductStore((state) => state.tags);
   const verifySubmit = () => {
     let isError = false;
-    console.log("tags", name);
     let errorText = "Error: Missing required parameters";
     if (name.length < 4) {
       isError = true;

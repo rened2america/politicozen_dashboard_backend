@@ -189,9 +189,9 @@ export const Mug = (props: any) => {
         updateColor(DEFAULT_COLORS.black);
       }
       if (
-        materials["Material.001"].color.b === 0 &&
-        materials["Material.001"].color.g === 0 &&
-        materials["Material.001"].color.r === 0
+        materials["Material.001"].color.b === 0.030713443727452196 &&
+        materials["Material.001"].color.g === 0.030713443727452196 &&
+        materials["Material.001"].color.r === 0.030713443727452196
       ) {
         console.log("black");
         const base64 = gl.domElement

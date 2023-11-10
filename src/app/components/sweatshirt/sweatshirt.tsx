@@ -88,6 +88,12 @@ export const Sweatshirt = (props: any) => {
   }, [isSuccess]);
 
   useEffect(() => {
+    console.log("imagesProduct.white.length", imagesProduct.white.length);
+    console.log("imagesProduct.beige.length", imagesProduct.beige.length);
+    console.log("imagesProduct.red.length", imagesProduct.red.length);
+    console.log("imagesProduct.blue.length", imagesProduct.blue.length);
+    console.log("imagesProduct.black.length", imagesProduct.black.length);
+
     if (
       imagesProduct.white.length > 0 &&
       imagesProduct.beige.length > 0 &&
@@ -193,9 +199,11 @@ export const Sweatshirt = (props: any) => {
         updateColor(DEFAULT_COLORS.black);
       }
       if (
-        materials.Knit_Cotton_Jersey_FRONT_2709.color.b === 0 &&
-        materials.Knit_Cotton_Jersey_FRONT_2709.color.g === 0 &&
-        materials.Knit_Cotton_Jersey_FRONT_2709.color.r === 0
+        materials.Knit_Cotton_Jersey_FRONT_2709.color.b ===
+          0.030713443727452196 &&
+        materials.Knit_Cotton_Jersey_FRONT_2709.color.g ===
+          0.030713443727452196 &&
+        materials.Knit_Cotton_Jersey_FRONT_2709.color.r === 0.030713443727452196
       ) {
         console.log("black");
         const base64 = gl.domElement
