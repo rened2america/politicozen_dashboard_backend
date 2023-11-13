@@ -10,6 +10,7 @@ if (
     process.env.PWD
   }/node_modules/canvas/build/Release:${process.env.LD_LIBRARY_PATH || ""}`;
 }
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -43,6 +44,7 @@ const nextConfig = {
       "utf-8-validate": "commonjs utf-8-validate",
       bufferutil: "commonjs bufferutil",
       canvas: "commonjs canvas",
+      fabric: "commonjs fabric",
     });
     // config.infrastructureLogging = { debug: /PackFileCache/ };
     return config;
