@@ -25,7 +25,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    outputFileTracingExcludes: ["**canvas**"],
+    serverComponentsExternalPackages: ["fabric"],
   },
   webpack: (config) => {
     config.externals.push({
