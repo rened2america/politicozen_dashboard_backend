@@ -38,6 +38,7 @@ const nextConfig = {
   },
   experimental: {
     serverComponentsExternalPackages: ["fabric"],
+    serverComponentsExternalPackages: ["canvas"],
   },
   webpack: (config) => {
     config.externals.push({
