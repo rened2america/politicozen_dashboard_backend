@@ -10,7 +10,7 @@ import {
 import { useDropzone } from "react-dropzone";
 import { IconUpload } from "../../icons/IconUpload";
 import { useState } from "react";
-import PreviewImage from "../PreviewImage/PreviewImage";
+// import PreviewImage from "../PreviewImage/PreviewImage";
 
 export const DesignProperties = () => {
   const [imgURL, setImgURL] = useState<string>("");
@@ -22,7 +22,7 @@ export const DesignProperties = () => {
     },
     onDrop: (acceptedFiles) => {
       console.log(acceptedFiles[0]);
-      // updateImgLogo(URL.createObjectURL(acceptedFiles[0]));
+      updateImgLogo(URL.createObjectURL(acceptedFiles[0]));
       updateImgBase64Logo(URL.createObjectURL(acceptedFiles[0]));
       setImgURL(URL.createObjectURL(acceptedFiles[0]));
     },
@@ -237,7 +237,7 @@ export const DesignProperties = () => {
             <IconUpload />
           </div>
         </div>
-        <PreviewImage imageFile={imgURL} />
+        {/* <PreviewImage imageFile={imgURL} /> */}
       </div>
     </MenuPropertiesLayout>
   );
