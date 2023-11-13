@@ -184,9 +184,9 @@ export const Object3D = (props: any) => {
         updateColor(DEFAULT_COLORS.black);
       }
       if (
-        materials.lambert1.color.b === 0 &&
-        materials.lambert1.color.g === 0 &&
-        materials.lambert1.color.r === 0
+        materials.lambert1.color.b === 0.030713443727452196 &&
+        materials.lambert1.color.g === 0.030713443727452196 &&
+        materials.lambert1.color.r === 0.030713443727452196
       ) {
         console.log("black");
         const base64 = gl.domElement

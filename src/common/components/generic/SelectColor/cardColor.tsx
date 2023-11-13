@@ -56,7 +56,9 @@ export const CardColor: FC<{ color: string; colorName: string }> = ({
               }
         }
         onClick={() => {
-          updateColorsSelected(color);
+          if (color != "white") {
+            updateColorsSelected(color);
+          }
         }}
       >
         <div
