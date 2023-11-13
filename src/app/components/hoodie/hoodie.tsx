@@ -94,8 +94,6 @@ export const Hoddie = (props: any) => {
       imagesProduct.blue.length > 0 &&
       imagesProduct.black.length > 0
     ) {
-      console.log("Creando Producto");
-      console.log(imagesProduct);
       //@ts-ignore
       createProduct({
         imgLogo: image64base,
@@ -194,7 +192,6 @@ export const Hoddie = (props: any) => {
           0.030713443727452196 &&
         materials.Knit_Fleece_Terry_FRONT_2650.color.r === 0.030713443727452196
       ) {
-        console.log("black");
         const base64 = gl.domElement
           .toDataURL("image/png")
           .replace("image/png", "image/octet-stream");
@@ -203,19 +200,6 @@ export const Hoddie = (props: any) => {
         updateResetProductColor(true);
       }
     }
-    console.log(
-      "Color negro b",
-      materials.Knit_Fleece_Terry_FRONT_2650.color.b
-    );
-    console.log(
-      "Color negro g",
-      materials.Knit_Fleece_Terry_FRONT_2650.color.g
-    );
-
-    console.log(
-      "Color negro r",
-      materials.Knit_Fleece_Terry_FRONT_2650.color.r
-    );
     easing.dampC(
       materials.Knit_Fleece_Terry_FRONT_2650.color,
       color,
