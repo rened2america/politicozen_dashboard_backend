@@ -90,7 +90,7 @@ export const useProductStore = create((set) => {
     updateResetProductColor: (resetProductColor: boolean) =>
       set({ resetProductColor }),
     updateColorsSelected: (colorsSelected: string) =>
-      set((state) => {
+      set((state: any) => {
         return {
           colorsSelected: {
             ...state.colorsSelected,

@@ -25,6 +25,27 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      net: false,
+      os: false,
+      tls: false,
+      fs: false,
+      child_process: false,
+      perf_hooks: false,
+    };
+
+    // config.externals.push({
+    //   Sharp: "commonjs Sharp",
+    //   "utf-8-validate": "commonjs utf-8-validate",
+    //   bufferutil: "commonjs bufferutil",
+    //   canvas: "commonjs canvas",
+    //   fabric: "commonjs fabric",
+    // });
+    // config.infrastructureLogging = { debug: /PackFileCache/ };
+    return config;
+  },
 };
 
 module.exports = nextConfig;
