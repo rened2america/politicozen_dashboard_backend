@@ -12,6 +12,8 @@ import { IconNotification } from "@/common/components/icons/IconNotification";
 import { useProductStore } from "@/store/productStore";
 import * as Toast from "@radix-ui/react-toast";
 import { ToastContainer, toast } from "react-toastify";
+import BeatLoader from "react-spinners/BeatLoader";
+
 import "react-toastify/dist/ReactToastify.css";
 const NewProdut = () => {
   const menu = useProductStore((state) => state.menuDesign);
@@ -233,7 +235,11 @@ const NewProdut = () => {
                   gridTemplateColumns: "1fr 40px",
                 }}
               >
-                <div>{transitionProduct}</div>
+                <div>
+                  {transitionProduct}
+                  <BeatLoader color="#36d7b7" loading={true} size={"16px"} />
+                </div>
+
                 <div
                   style={{
                     borderRadius: "32px",
