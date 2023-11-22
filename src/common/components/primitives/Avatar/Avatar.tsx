@@ -111,7 +111,26 @@ export const Avatar = () => {
             </div>
           </DropdownMenu.Item>
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
-
+          <DropdownMenu.Item className="DropdownMenuItem">
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "grid",
+                alignItems: "center",
+                color: "#394047",
+                fontSize: "16px",
+                fontWeight: "500",
+              }}
+              href={`${process.env
+                .NEXT_PUBLIC_BASE_URL_ECOMMERCE!}artist/${getName(
+                isLoading,
+                data?.data.getArtist.name.replace(/ /g, "-")
+              )}/?page=1`}
+            >
+              Store
+            </Link>
+          </DropdownMenu.Item>
           <DropdownMenu.Item className="DropdownMenuItem">
             <Link
               style={{

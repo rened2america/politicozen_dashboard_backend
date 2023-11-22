@@ -1,18 +1,22 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import { fabric } from "fabric";
+import * as fabric from "fabric";
 import { useProductStore } from "@/store/productStore";
 
 const PreviewImage = ({ imageFile }: { imageFile: string }) => {
-  const canvasRef = useRef();
+  const canvasRef = useRef(null);
   const [modifiedImageUrl, setModifiedImageUrl] = useState(null);
   const updateImgLogo = useProductStore((state) => state.updateImgLogo);
 
   useEffect(() => {
     if (imageFile) {
-      fabric.Image.fromURL(imageFile, (img) => {
+      console.log("se ejcuto imageFile", imageFile);
+
+      fabric.FabricImage.fromURL(imageFile, {}, {}).then((img) => {
+        console.log(img);
         const canvas = new fabric.Canvas(canvasRef.current);
         const maxSize = Math.max(img.width, img.height);
+        console.log("se ejecuto fromURL ", maxSize);
 
         canvas.setWidth(maxSize);
         canvas.setHeight(maxSize);
@@ -31,6 +35,7 @@ const PreviewImage = ({ imageFile }: { imageFile: string }) => {
         const dataURL = canvas.toDataURL({
           format: "png",
           quality: 1,
+          multiplier: 1,
         });
 
         // Convertir base64 a Blob
@@ -38,9 +43,11 @@ const PreviewImage = ({ imageFile }: { imageFile: string }) => {
           .then((res) => res.blob())
           .then((blob) => {
             const url = URL.createObjectURL(blob);
+            console.log("se ejecuto fetch: ", url);
             updateImgLogo(url);
           });
       });
+      // const canvas = new fabric.Canvas(canvasRef.current);
     }
   }, [imageFile]);
 
