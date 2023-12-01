@@ -9,23 +9,35 @@ import {
 } from "@/common/layouts/PageLayout/MenuPropertiesLayout";
 import { useDropzone } from "react-dropzone";
 import { IconUpload } from "../../icons/IconUpload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PreviewImage from "../PreviewImage/PreviewImage";
+import { useGetGallery } from "@/app/dashboard2/gallery/useGallery";
 // import PreviewImage from "../PreviewImage/PreviewImage";
 
 export const DesignProperties = () => {
   const [imgURL, setImgURL] = useState<string>("");
-
+  const [prevIma, setPrevIma] = useState(true);
+  const { data } = useGetGallery();
+  const updateGroupId = useProductStore((state) => state.updateGroupId);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: {
       "image/*": [],
     },
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
       console.log(acceptedFiles[0]);
+      console.log("viendo", URL.createObjectURL(acceptedFiles[0]));
+      const response = await fetch(
+        "https://media.licdn.com/dms/image/C5603AQFJGyfUdfWEvw/profile-displayphoto-shrink_100_100/0/1617441516348?e=1706745600&v=beta&t=nN2--3rE1K3QFwbMW_x16MpZVybXN52smQOZ1UnWpxE"
+      );
+      // Paso 2: Convertir a Blob
+      const imageBlob = await response.blob();
+      console.log("imageBlob", imageBlob);
+      console.log("imageBlob64", URL.createObjectURL(imageBlob));
+
       // updateImgLogo(URL.createObjectURL(acceptedFiles[0]));
-      updateImgBase64Logo(URL.createObjectURL(acceptedFiles[0]));
-      setImgURL(URL.createObjectURL(acceptedFiles[0]));
+      updateImgBase64Logo(URL.createObjectURL(imageBlob));
+      setImgURL(URL.createObjectURL(imageBlob));
     },
   });
   const updateImgLogo = useProductStore((state) => state.updateImgLogo);
@@ -43,6 +55,16 @@ export const DesignProperties = () => {
   });
   const angle = useProductStore((state) => state.angle);
   const selectModel = useProductStore((state) => state.selectModel);
+
+  useEffect(() => {
+    setPrevIma(false);
+  }, [imgURL]);
+
+  useEffect(() => {
+    if (!prevIma) {
+      setPrevIma(true);
+    }
+  }, [prevIma]);
 
   return (
     <MenuPropertiesLayout>
@@ -204,8 +226,42 @@ export const DesignProperties = () => {
             />
           </form>
         </div>
+        <div>
+          {data && (
+            <select
+              style={{
+                width: "100%",
+                backgroundColor: "rgb(248, 249, 249)",
+                height: "40px",
+                borderRadius: "8px",
+                marginTop: "16px",
+                cursor: "pointer",
+              }}
+              // value={selectedFruit} // ...force the select's value to match the state variable...
+              onChange={async (e) => {
+                const idNumber = parseInt(e.target.value);
+                const selectImage = data.data.gallery.find((image: any) => {
+                  return image.id === idNumber;
+                });
+                updateGroupId(selectImage.id);
+                const response = await fetch(selectImage.urlImage);
+                const imageBlob = await response.blob();
 
-        <div
+                updateImgBase64Logo(URL.createObjectURL(imageBlob));
+                setImgURL(URL.createObjectURL(imageBlob));
+              }}
+            >
+              {data.data.gallery.map((art: any) => {
+                return (
+                  <option key={art.id} value={art.id}>
+                    {art.name}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+        </div>
+        {/* <div
           style={{
             fontSize: "13px",
             fontWeight: "700",
@@ -237,8 +293,8 @@ export const DesignProperties = () => {
           >
             <IconUpload />
           </div>
-        </div>
-        <PreviewImage imageFile={imgURL} />
+        </div> */}
+        {prevIma && <PreviewImage imageFile={imgURL} />}
       </div>
     </MenuPropertiesLayout>
   );

@@ -51,7 +51,7 @@ export const Mug = (props: any) => {
   const colorsSelected = useProductStore((state) => state.colorsSelected);
   const subtitle = useProductStore((state) => state.subtitle);
   const description = useProductStore((state) => state.description);
-
+  const groupId = useProductStore((state) => state.groupId);
   const updateOpenToast = useProductStore((state) => state.updateOpenToast);
   const openToast = useProductStore((state) => state.openToast);
   const tags = useProductStore((state) => state.tags);
@@ -110,6 +110,7 @@ export const Mug = (props: any) => {
         description,
         type: "Mug",
         tags,
+        groupId,
       });
       updateTransitionProduct("saving");
 
