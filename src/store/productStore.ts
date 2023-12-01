@@ -3,6 +3,7 @@ import { create } from "zustand";
 const initialState = {
   imgLogo: "/LogoBlack.png",
   imgBase64Logo: "",
+  groupId: null,
   imgProduct: {
     white: "",
     beige: "",
@@ -82,7 +83,7 @@ export const useProductStore = create((set) => {
         };
       });
     },
-
+    updateGroupId: (groupId: number) => set({ groupId }),
     updateColor: (color: string) => set({ color }),
     updateSelectModel: (selectModel: string) => set({ selectModel }),
     updateTags: (tags: string) => set({ tags }),

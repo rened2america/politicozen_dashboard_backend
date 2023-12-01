@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useGetProfile } from "./settings/profile/useProfile";
 import SyncLoader from "react-spinners/SyncLoader";
+import { LuGalleryThumbnails } from "react-icons/lu";
 
 type NewLayout = {
   children: ReactNode;
@@ -126,6 +127,19 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
               <NavLink path={pathname} href="/dashboard2/orders">
                 <IconOrders />
                 Orders
+              </NavLink>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                alignItems: "center",
+                justifyItems: "start",
+              }}
+            >
+              <NavLink path={pathname} href="/dashboard2/gallery">
+                <LuGalleryThumbnails style={{ fontSize: "20px" }} />
+                Gallery
               </NavLink>
             </div>
 

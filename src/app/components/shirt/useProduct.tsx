@@ -4,6 +4,7 @@ type ProductData = {
   imgLogo: any;
   imgProduct: string;
   name: string;
+  groupId: number;
   subtitle: string;
   description: string;
   imgListProduct: {

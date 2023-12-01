@@ -7,13 +7,10 @@ const PreviewImage = ({ imageFile }: { imageFile: string }) => {
   const canvasRef = useRef(null);
   const [modifiedImageUrl, setModifiedImageUrl] = useState(null);
   const updateImgLogo = useProductStore((state) => state.updateImgLogo);
-
   useEffect(() => {
     if (imageFile) {
       console.log("se ejcuto imageFile", imageFile);
-
       fabric.FabricImage.fromURL(imageFile, {}, {}).then((img) => {
-        console.log(img);
         const canvas = new fabric.Canvas(canvasRef.current);
         const maxSize = Math.max(img.width, img.height);
         console.log("se ejecuto fromURL ", maxSize);
@@ -49,6 +46,12 @@ const PreviewImage = ({ imageFile }: { imageFile: string }) => {
       });
       // const canvas = new fabric.Canvas(canvasRef.current);
     }
+    return () => {
+      if (canvasRef.current?.fabric) {
+        console.log("inRef", canvasRef.current);
+        canvasRef?.current?.dispose();
+      }
+    };
   }, [imageFile]);
 
   // Aquí puedes usar `modifiedImageUrl` como necesites, por ejemplo, mostrarla o enviarla a un servidor
