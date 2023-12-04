@@ -19,6 +19,8 @@ export const DesignProperties = () => {
   const [prevIma, setPrevIma] = useState(true);
   const { data } = useGetGallery();
   const updateGroupId = useProductStore((state) => state.updateGroupId);
+  const groupId = useProductStore((state) => state.groupId);
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: {
@@ -237,7 +239,7 @@ export const DesignProperties = () => {
                 marginTop: "16px",
                 cursor: "pointer",
               }}
-              // value={selectedFruit} // ...force the select's value to match the state variable...
+              value={groupId ? groupId : ""}
               onChange={async (e) => {
                 const idNumber = parseInt(e.target.value);
                 const selectImage = data.data.gallery.find((image: any) => {
@@ -251,6 +253,7 @@ export const DesignProperties = () => {
                 setImgURL(URL.createObjectURL(imageBlob));
               }}
             >
+              <option value="">*Select Art</option>
               {data.data.gallery.map((art: any) => {
                 return (
                   <option key={art.id} value={art.id}>
