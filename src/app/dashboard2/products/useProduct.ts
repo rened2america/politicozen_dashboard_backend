@@ -14,7 +14,7 @@ export const useGetProducts = () => {
 };
 
 const getProductByIdData = async (productId: string) => {
-  const res = await axios.get(`product/${productId}`).then((res) => {
+  const res = await axios.get(`product/unique/${productId}`).then((res) => {
     return res;
   });
   console.log(res);
