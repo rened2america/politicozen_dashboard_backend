@@ -33,27 +33,39 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
   } = useForm();
   const [selected, setSelected] = useState<string[]>([]);
   const onSubmit = (data) => mutate({ ...data, tags: selected });
-  console.log(data?.data.products);
+  console.log(data);
 
   useEffect(() => {
     if (!isLoading) {
       reset({
-        name: data?.data.products.title,
-        description: data?.data.products.description,
-        id: data?.data.products.id,
+        name: data?.data.productFromDb.title,
+        description: data?.data.productFromDb.description,
+        id: data?.data.productFromDb.id,
       });
-      const tagList = data?.data.products.tag.map((tag) => tag.value);
-      console.log("se ejecuto", tagList);
+      // const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
+      // console.log("se ejecuto", tagList);
 
-      if (tagList) {
-        setSelected(tagList);
-      }
+      // if (tagList) {
+      //   setSelected(tagList);
+      // }
     }
   }, [isLoading]);
 
+  // useEffect(() => {
+  //   const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
+
+  //   if (tagList && tagList.length > 0) {
+  //     console.log("inside tagList", tagList);
+  //     setSelected((prevValue) => {
+  //       if (prevValue.length > 0) return prevValue;
+  //       return tagList;
+  //     });
+  //   }
+  // }, [data?.data.productFromDb.tag]);
+
   useEffect(() => {
     if (isSuccessGetProduct) {
-      const tagList = data?.data.products.tag.map((tag) => tag.value);
+      const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
       console.log("se ejecuto", tagList);
 
       if (tagList) {
@@ -147,7 +159,7 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                 alignItems: "center",
               }}
             >
-              {data?.data.products.title}
+              {data?.data.productFromDb.title}
             </div>
             <div>
               <div
@@ -296,12 +308,15 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                   }}
                 >
                   <div>Tags</div>
-                  <TagsInput
-                    value={selected}
-                    onChange={setSelected}
-                    name="fruits"
-                    placeHolder="Enter Tags"
-                  />
+                  {selected && (
+                    <TagsInput
+                      value={selected}
+                      onChange={setSelected}
+                      name="fruits"
+                      placeHolder="Enter Tags"
+                    />
+                  )}
+
                   <p
                     id="custom-tags-description"
                     style={{ color: "gray", fontSize: "13px" }}
@@ -328,14 +343,14 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
               }}
             >
               <Image
-                src={data?.data.products.design[0].url}
+                src={data?.data.productFromDb.design[0].url}
                 width="300"
                 height="260"
                 style={{
                   backgroundColor: "#f5f5f5",
                   borderRadius: "16px",
                 }}
-                alt={data?.data.products.title}
+                alt={data?.data.productFromDb.title}
               />
               <div>Sizes</div>
               <div
@@ -346,8 +361,8 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                   gap: "8px",
                 }}
               >
-                {data?.data.products.sizes &&
-                  data?.data.products.sizes.map((size) => {
+                {data?.data.productFromDb.sizes &&
+                  data?.data.productFromDb.sizes.map((size) => {
                     return (
                       <div
                         key={size.id}
@@ -375,8 +390,8 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                   gap: "8px",
                 }}
               >
-                {data?.data.products.sizes &&
-                  data?.data.products.colors.map((color) => {
+                {data?.data.productFromDb.sizes &&
+                  data?.data.productFromDb.colors.map((color) => {
                     return (
                       <div
                         key={color.id}
