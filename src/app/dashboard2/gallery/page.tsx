@@ -42,17 +42,21 @@ const Gallery = () => {
     }
   };
 
-  const { getInputProps, acceptedFiles, getRootProps } = useDropzone({
-    multiple: false,
-    accept: {
-      "image/*": [],
-    },
-    onDrop: (acceptedFiles) => {
-      console.log("acceptedFiles", acceptedFiles[0]);
-      setUrlImage(URL.createObjectURL(acceptedFiles[0]));
-      setSelectedFile(acceptedFiles[0]); // Guardar la imagen seleccionada
-    },
-  });
+  const { getInputProps, acceptedFiles, getRootProps, fileRejections } =
+    useDropzone({
+      multiple: false,
+      maxSize: 31457280,
+      accept: {
+        "image/*": [],
+      },
+      onDrop: (acceptedFiles) => {
+        console.log("acceptedFiles", acceptedFiles[0]);
+        if (acceptedFiles[0]) {
+          setUrlImage(URL.createObjectURL(acceptedFiles[0]));
+          setSelectedFile(acceptedFiles[0]);
+        } // Guardar la imagen seleccionada
+      },
+    });
 
   const handleSubmit = (imageCrop) => {
     if (selectedFile && imageName) {
@@ -72,7 +76,7 @@ const Gallery = () => {
     }
   }, [isLoadingArt]);
 
-  console.log("selectedFile", selectedFile);
+  console.log("selectedFile", fileRejections);
 
   return (
     <PageLayout>
@@ -156,7 +160,7 @@ const Gallery = () => {
               color: "white",
             }}
           >
-            Aspect Ratio 4/3
+            Aspect Ratio 2/3
           </div>
           <div
             style={{
@@ -214,9 +218,15 @@ const Gallery = () => {
             <input {...getInputProps()} />
             {acceptedFiles.length > 0 ? (
               <div>{acceptedFiles[0].path}</div>
+            ) : fileRejections.length > 0 &&
+              fileRejections[0].errors[0].code === "file-too-large" ? (
+              <div style={{ color: "red", fontWeight: "700" }}>
+                File is larger than 30 Mb
+              </div>
             ) : (
               <div>Upload logo in PNG</div>
             )}
+
             <div
               style={{
                 border: "1px solid #687373",
