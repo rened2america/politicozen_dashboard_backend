@@ -137,6 +137,7 @@ export const NewHoodie = (props: any) => {
         updateColor(DEFAULT_COLORS.white);
         easing.dampC(materials.mat0.color, DEFAULT_COLORS.white, 0, delta);
         updateResetProductColor(false);
+        setTimeout(() => {}, 1000);
       }
       if (
         materials.mat0.color.b === 1 &&

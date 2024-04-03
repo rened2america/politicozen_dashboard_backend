@@ -132,11 +132,13 @@ export const Object3D = (props: any) => {
   ]);
 
   useFrame((state, delta) => {
+    console.log();
     if (save) {
       if (resetProductColor) {
         updateColor(DEFAULT_COLORS.white);
         easing.dampC(materials.lambert1.color, DEFAULT_COLORS.white, 0, delta);
         updateResetProductColor(false);
+        setTimeout(() => {}, 1000);
       }
       if (
         materials.lambert1.color.b === 1 &&

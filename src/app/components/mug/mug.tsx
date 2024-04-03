@@ -141,6 +141,7 @@ export const Mug = (props: any) => {
           delta
         );
         updateResetProductColor(false);
+        setTimeout(() => {}, 1000);
       }
       if (
         materials["Material.001"].color.b === 1 &&

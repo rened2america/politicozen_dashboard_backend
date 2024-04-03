@@ -137,6 +137,7 @@ export const Hoddie = (props: any) => {
           delta
         );
         updateResetProductColor(false);
+        setTimeout(() => {}, 1000);
       }
       if (
         materials.Knit_Fleece_Terry_FRONT_2650.color.b === 1 &&
