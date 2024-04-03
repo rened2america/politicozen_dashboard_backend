@@ -24,6 +24,9 @@ const NewProdut = () => {
   const imgLogo = useProductStore((state) => state.imgLogo);
   const name = useProductStore((state) => state.name);
   const tags = useProductStore((state) => state.tags);
+  const updateResetProductColor = useProductStore(
+    (state) => state.updateResetProductColor
+  );
   const verifySubmit = () => {
     let isError = false;
     let errorText = "Error: Missing required parameters";
@@ -56,6 +59,7 @@ const NewProdut = () => {
         theme: "light",
       });
     } else {
+      updateResetProductColor(true);
       updateSave(true);
     }
   };
