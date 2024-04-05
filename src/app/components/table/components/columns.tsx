@@ -73,7 +73,7 @@ export const columns: ColumnDef<Task>[] = [
   {
     accessorKey: "subtitle",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Subtitle" />
+      <DataTableColumnHeader column={column} title="Description" />
     ),
     cell: ({ row }) => (
       <div className="max-w-[500px] truncate font-medium">
