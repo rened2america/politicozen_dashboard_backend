@@ -141,6 +141,21 @@ export const Avatar = () => {
                 color: "#394047",
                 fontSize: "14px",
               }}
+              href="/dashboard2/settings/developer"
+            >
+              Developer
+            </Link>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item className="DropdownMenuItem">
+            <Link
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "grid",
+                alignItems: "center",
+                color: "#394047",
+                fontSize: "14px",
+              }}
               href="/dashboard2/settings/profile"
             >
               Your profile
