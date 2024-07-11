@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  DotsHorizontalIcon,
+  DotsVerticalIcon,
   Pencil2Icon,
   TrashIcon,
   DownloadIcon
@@ -89,7 +89,7 @@ export function DataTableRowActions<TData>({
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
           {loading ? <BeatLoader /> :
-            <DotsHorizontalIcon className="h-4 w-4" />
+            <DotsVerticalIcon className="h-4 w-4" />
           }
           <span className="sr-only">Open menu</span>
         </Button>
