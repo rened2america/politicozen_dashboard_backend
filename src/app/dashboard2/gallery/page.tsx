@@ -8,6 +8,7 @@ import { IconUpload } from "@/common/components/icons/IconUpload";
 import Image from "next/image";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "./cropImage";
+import BeatLoader from "react-spinners/BeatLoader";
 const Gallery = () => {
   const { mutate, isLoading: isLoadingArt } = useUploadArt();
   const { data, isLoading, refetch } = useGetGallery();
@@ -251,7 +252,16 @@ const Gallery = () => {
               color: "white",
             }}
           >
-            Upload logo
+            {
+              isLoadingArt
+                ?
+                <div>
+
+                  <BeatLoader loading={isLoadingArt} color="white" />
+                </div>
+                :
+                "Upload logo"
+            }
           </button>
         </div>
       </div>
