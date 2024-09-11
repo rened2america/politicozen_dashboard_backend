@@ -30,6 +30,7 @@ axiosClient.interceptors.response.use(
       console.log("error.response.status === 401", error);
       window.location.href = "/login";
     }
+    return Promise.reject(error)
   }
 );
 export default axiosClient;
