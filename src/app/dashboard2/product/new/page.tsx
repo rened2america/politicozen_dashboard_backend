@@ -15,7 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import BeatLoader from "react-spinners/BeatLoader";
 
 import "react-toastify/dist/ReactToastify.css";
-const NewProdut = () => {
+const NewProduct = () => {
   const menu = useProductStore((state) => state.menuDesign);
   const updateMenuDesign = useProductStore((state) => state.updateMenuDesign);
   const updateSave = useProductStore((state) => state.updateSave);
@@ -310,4 +310,4 @@ const NewProdut = () => {
   );
 };
 
-export default NewProdut;
+export default NewProduct;
