@@ -15,7 +15,7 @@ const Gallery = () => {
   const [imageName, setImageName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(0.5);
   const [urlImage, setUrlImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [imageCrop, setImageCrop] = useState(null);
@@ -166,27 +166,38 @@ const Gallery = () => {
                 onChange={(e) => setImageName(e.target.value)}
                 className="p-2 w-full text-sm bg-gray-800 text-white rounded border border-gray-700"
               />
-              <div className="text-white">Aspect Ratio 2/3</div>
+              <div className="text-white">Aspect Ratio 1/1</div>
               <div className="relative h-64">
                 {urlImage && (
                   <Cropper
                     image={urlImage}
                     crop={crop}
                     zoom={zoom}
-                    aspect={2 / 3}
+                    aspect={1 / 1}
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}
                     onZoomChange={setZoom}
+                    minZoom={0.5}
+                    restrictPosition={false}
+                    style={{
+                      containerStyle: {
+                        background: 'transparent',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      },
+                      mediaStyle: { background: 'transparent' },
+                    }}
                   />
                 )}
               </div>
               <input
                 type="range"
                 value={zoom}
-                min={1}
+                min={0.5}
                 max={3}
-                step={0.1}
-                onChange={(e) => setZoom(e.target.value)}
+                step={0.05}                
+                onChange={(e) => setZoom(Number(e.target.value))}
                 className="w-full mt-2"
               />
               <div
@@ -219,7 +230,7 @@ const Gallery = () => {
                 )}
               </button>
             </>
-          )}
+          
         </div>
       </div>
     </PageLayout>
