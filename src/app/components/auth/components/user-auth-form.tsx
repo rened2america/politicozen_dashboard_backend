@@ -53,7 +53,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   // Handle login success and error
   React.useEffect(() => {
     if (isSuccess) {
-      router.push("/dashboard");
+      router.push("/dashboard2");
     }
   }, [isSuccess]);
 
