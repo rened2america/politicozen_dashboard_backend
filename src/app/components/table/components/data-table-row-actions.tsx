@@ -99,8 +99,6 @@ export function DataTableRowActions<TData>({
           onClick={() => {
             router.push(`/dashboard2/product/edit/${row.original.id}`);
           }}
-          align="end"
-          className="w-[80px]"
         >
           Edit
           <DropdownMenuShortcut>

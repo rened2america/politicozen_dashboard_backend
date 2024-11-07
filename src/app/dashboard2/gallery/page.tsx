@@ -13,6 +13,7 @@ const Gallery = () => {
   const { mutate, isLoading: isLoadingArt } = useUploadArt();
   const { data, isLoading, refetch } = useGetGallery();
   const [imageName, setImageName] = useState("");
+  const [categoryId, setCategoryId] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(0.5);
@@ -66,6 +67,7 @@ const Gallery = () => {
       formData.append("art", selectedFile);
       formData.append("name", imageName);
       formData.append("imageCrop", imageCrop);
+      formData.append("categoryId", String(categoryId));
       mutate(formData);
     } else {
       // Manejar el caso en que no se haya seleccionado una imagen o no se haya ingresado un nombre
@@ -166,6 +168,28 @@ const Gallery = () => {
                 onChange={(e) => setImageName(e.target.value)}
                 className="p-2 w-full text-sm bg-gray-800 text-white rounded border border-gray-700"
               />
+            <div className="w-full">
+              {/* <div className=" text-white">Category</div> */}
+              <select             
+                className="bg-gray-700 text-white w-full h-10 rounded-lg cursor-pointer"
+                value={categoryId}
+                onChange={(e) => setCategoryId(parseInt(e.target.value))}
+              >
+                <option value="0">Select Category</option>              
+                <option value="2">Politics</option>
+                <option value="3">History</option> 
+                <option value="5">Comics</option> 
+                <option value="1">Others</option> 
+                
+                {/* <option value="Social">Social</option>
+                <option value="Economics">Economics</option>
+                <option value="Environment">Environment</option>
+                <option value="Media">Media</option>
+                <option value="Culture">Culture</option>
+                <option value="Satire">Satire</option>
+                */}
+              </select>
+            </div>
               <div className="text-white">Aspect Ratio 1/1</div>
               <div className="relative h-64">
                 {urlImage && (
