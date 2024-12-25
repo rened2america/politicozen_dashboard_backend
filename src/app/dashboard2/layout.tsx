@@ -165,6 +165,15 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
                 Gallery
               </NavLink>
             </div>
+            
+            <div
+            className="gird items-center justify-items-start"
+            >
+              <NavLink path={pathname} href="/dashboard2/requests">
+                <LuGalleryThumbnails style={{ fontSize: "20px" }} />
+                Requests
+              </NavLink>
+            </div>
 
             <div
             className="grid items-center justify-items-center h-24"
