@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useGetProfile } from "./settings/profile/useProfile";
 import SyncLoader from "react-spinners/SyncLoader";
-import { LuGalleryThumbnails } from "react-icons/lu";
+import { LuGalleryThumbnails, LuGitPullRequest } from "react-icons/lu";
 import Image from "next/image";
 
 type NewLayout = {
@@ -170,7 +170,7 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
             className="gird items-center justify-items-start"
             >
               <NavLink path={pathname} href="/dashboard2/requests">
-                <LuGalleryThumbnails style={{ fontSize: "20px" }} />
+                <LuGitPullRequest style={{ fontSize: "20px" }} />
                 Requests
               </NavLink>
             </div>

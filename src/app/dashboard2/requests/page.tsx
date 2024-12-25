@@ -16,6 +16,8 @@ import CategoryDropDown from "@/app/components/category-dropdown/category-dropdo
 import axios from "@/service/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { DataTable } from "@/app/components/requests-table/components/data-table";
+import { columns } from "@/app/components/requests-table/components/columns";
 
 const Gallery = () => {
   const { mutate, isLoading: isLoadingArt } = useUploadArt();
@@ -141,7 +143,20 @@ const Gallery = () => {
 
   return (
     <PageLayout>
-      <PageTitle>Gallery</PageTitle>
+      <PageTitle>Requests</PageTitle>
+      <div className="mb-10">
+        {isLoading ? (
+          <div className="w-full h-[50vh] text-base grid place-items-center rounded-lg border border-gray-300 font-bold">
+            <div>Loading Products...</div>
+          </div>
+        ) : (
+          <DataTable
+            data={data?.data}
+            columns={columns}
+            isLoading={isLoading}
+          />
+        )}
+      </div>
       <div className="grid md:grid-cols-1 lg:grid-cols-[1fr,300px] gap-12">
         <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4 my-4">
           {data &&
