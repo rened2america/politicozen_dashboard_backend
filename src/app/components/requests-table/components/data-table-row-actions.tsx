@@ -26,7 +26,7 @@ import {
 import { labels } from "../data/data";
 import { taskSchema } from "../data/schema";
 import { useRouter } from "next/navigation";
-import { useDeleteProduct } from "@/app/dashboard2/products/useProduct";
+import { useDeleteRequest } from "@/app/dashboard2/requests/useRequests";
 import { useEffect, useState } from "react";
 import axios from "@/service/axiosInstance";
 import JSZip from "jszip";
@@ -41,10 +41,33 @@ interface DataTableRowActionsProps<TData> {
 
 export function DataTableRowActions<TData>({
   row,
+  onDeleteSuccess,
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
-  const { mutate, isSuccess } = useDeleteProduct();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+
+  const { mutate, isSuccess, isLoading: deleteLoading } = useDeleteRequest({
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        onDeleteSuccess(row.original.id);
+        toast.success("Request deleted successfully!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      }
+    },
+    onError: (error) => {
+      toast.error("Failed to delete the request", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
+  });
+
+  const handleDelete = async (requestID) => {
+    const confirmed = window.confirm('Delete this request? \nNOTE: This action is not reversible!');
+    if (confirmed) {
+      mutate(requestID);
+    }
+  }
 
   const downloadImages = async (productId: number) => {
     setLoading(true)
@@ -73,14 +96,6 @@ export function DataTableRowActions<TData>({
 
   }
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Removed Product", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-    }
-  }, [isSuccess]);
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -107,7 +122,7 @@ export function DataTableRowActions<TData>({
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            mutate(row.original.id);
+            handleDelete(row.original.id);
           }}
         >
           Delete

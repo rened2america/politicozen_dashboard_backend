@@ -19,9 +19,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { DataTable } from "@/app/components/requests-table/components/data-table";
 import { columns } from "@/app/components/requests-table/components/columns";
 
-const Gallery = () => {
+const Requests = () => {
   const { mutate, isLoading: isLoadingArt } = useUploadArt();
-  const { data, isLoading, refetch } = useGetAllRequests();
+  const { data: requestData, isLoading, refetch } = useGetAllRequests();
+  const [tableData, setTableData] = useState([]);
   const [imageName, setImageName] = useState("");
   const [categoryId, setCategoryId] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -33,6 +34,17 @@ const Gallery = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArt, setSelectedArt] = useState(null);
 
+  // Update tableData when API data changes
+  useEffect(() => {
+    if (requestData?.data) {
+      setTableData(requestData.data);
+    }
+  }, [requestData]);
+
+  // Handle data changes from the DataTable
+  const handleDataChange = (newData) => {
+    setTableData(newData);
+  };
   const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
     console.log(croppedArea, croppedAreaPixels);
     setCroppedAreaPixels(croppedAreaPixels);
@@ -101,18 +113,6 @@ const Gallery = () => {
     setOpenMenuId(null); // Close the menu
   };
 
-  const handleDelete = async (id: string) => {
-    setOpenMenuId(null); // Close the menu
-    const confirmed = window.confirm('Are you sure you want to delete this art?');
-    if (confirmed) {
-      try {
-        const response = await axios.delete(`product/art/${id}`)
-        handleSuccess("Art deleted")
-      } catch (error) {
-        handleError("Cannot delete art")
-      }
-    }
-  };
 
   const handleSuccess = (message: string) => {
     toast.success(message, {
@@ -151,16 +151,17 @@ const Gallery = () => {
           </div>
         ) : (
           <DataTable
-            data={data?.data}
+            data={tableData}
             columns={columns}
             isLoading={isLoading}
+            onDataChange={handleDataChange}
           />
         )}
       </div>
       <div className="grid md:grid-cols-1 lg:grid-cols-[1fr,300px] gap-12">
         <div className="w-full grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-4 my-4">
-          {data &&
-            data.data.map((img: any) => {
+          {tableData &&
+            tableData.map((img: any) => {
               return (
                 <div key={img.id} className="relative group">
                   <div className="w-[120px] h-[180px] relative bg-[#F8F9F9] grid grid-rows-[1fr_100px] border rounded-sm">
@@ -307,4 +308,4 @@ const Gallery = () => {
   );
 };
 
-export default Gallery;
+export default Requests;

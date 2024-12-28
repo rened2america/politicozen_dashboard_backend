@@ -34,12 +34,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   isLoading: boolean;
+  onDataChange?: (newData: TData[]) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  onDataChange,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -48,6 +50,12 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [tableData, setTableData] = React.useState<TData[]>(data);
+
+  const handleDeleteSuccess = (deletedId: number) => {
+    const newData = data.filter((item: any) => item.id !== deletedId);
+    onDataChange?.(newData);
+  };
 
   const table = useReactTable({
     data,
@@ -57,6 +65,9 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+    },
+    meta: {
+      onDeleteSuccess: handleDeleteSuccess,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -85,9 +96,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
@@ -97,10 +108,7 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   <SyncLoader loading={isLoading} color="black" />
                 </TableCell>
               </TableRow>

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "@/service/axiosInstance";
 
 const postUploadRequest = async (data: any) => {
@@ -16,8 +16,35 @@ const postUploadRequest = async (data: any) => {
   return res;
 };
 
+const deleteRequest = async (requestID: number) => {
+  const res = await axios
+    .delete(`politicozen/deleteRequest/${requestID}`)
+    .then((res) => {
+      return res;
+    });
+
+  return res;
+};
+
 export const useUploadArt = () => {
   return useMutation((data: any) => postUploadRequest(data), {});
+};
+
+export const useDeleteRequest = (options = {}) => {
+  const queryClient = useQueryClient();
+  
+  return useMutation((requestID: number) => deleteRequest(requestID), {
+    ...options,
+    onSuccess: async (response, variables, context) => {
+      // Invalidate and refetch the requests query after successful deletion
+      await queryClient.invalidateQueries(["allRequests"]);
+      
+      // Call the original onSuccess if provided
+      if (options.onSuccess) {
+        options.onSuccess(response, variables, context);
+      }
+    },
+  });
 };
 
 const getAllRequests = async () => {
