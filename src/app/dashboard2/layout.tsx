@@ -119,7 +119,7 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
           >
             <Image height={32} width={28} src='/LogoBlack.png' alt="logo"/>
             <div
-            className="overflow-hidden text-ellipsis whitespace-nowrap text-[0.94rem] tracking-normal leading-5 font-bold text-   w-[120px]" 
+            className="overflow-hidden text-ellipsis whitespace-nowrap text-[0.94rem] tracking-normal leading-5 font-bold   w-[120px]" 
             >
               {data?.data.getArtist.name}
             </div>
@@ -165,15 +165,18 @@ const NewLayout: FC<NewLayout> = ({ children }) => {
                 Gallery
               </NavLink>
             </div>
-            
-            <div
-            className="gird items-center justify-items-start"
-            >
-              <NavLink path={pathname} href="/dashboard2/requests">
-                <LuGitPullRequest style={{ fontSize: "20px" }} />
-                Requests
-              </NavLink>
-            </div>
+            {
+              // TODO: change id
+               data?.data.getArtist.id == 135 && 
+               <div
+               className="gird items-center justify-items-start"
+               >
+                 <NavLink path={pathname} href="/dashboard2/requests">
+                   <LuGitPullRequest style={{ fontSize: "20px" }} />
+                   Requests
+                 </NavLink>
+               </div>
+            }
 
             <div
             className="grid items-center justify-items-center h-24"
