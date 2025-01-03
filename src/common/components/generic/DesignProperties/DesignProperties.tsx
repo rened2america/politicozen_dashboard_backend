@@ -8,18 +8,22 @@ import {
   MenuPropertiesLayoutTitle,
 } from "@/common/layouts/PageLayout/MenuPropertiesLayout";
 import { useDropzone } from "react-dropzone";
-import { IconUpload } from "../../icons/IconUpload";
 import { useEffect, useState } from "react";
 import PreviewImage from "../PreviewImage/PreviewImage";
 import { useGetGallery } from "@/app/dashboard2/gallery/useGallery";
+import { useGetAllRequests } from "@/app/dashboard2/requests/useRequests";
 // import PreviewImage from "../PreviewImage/PreviewImage";
 
 export const DesignProperties = () => {
   const [imgURL, setImgURL] = useState<string>("");
   const [prevIma, setPrevIma] = useState(true);
   const { data } = useGetGallery();
+  const { data: requestData, isLoading, refetch } = useGetAllRequests();
   const updateGroupId = useProductStore((state) => state.updateGroupId);
   const groupId = useProductStore((state) => state.groupId);
+
+  const [galleryId, setGalleryId] = useState<number | null>(null);
+  const [requestId, setRequestId] = useState<number | null>(null);
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
@@ -67,6 +71,15 @@ export const DesignProperties = () => {
       setPrevIma(true);
     }
   }, [prevIma]);
+
+  useEffect(() => {
+    // Cleanup function
+    return () => {
+      if (imgURL) {
+        URL.revokeObjectURL(imgURL);
+      }
+    };
+  }, [imgURL]);
 
   return (
     <MenuPropertiesLayout>
@@ -228,41 +241,87 @@ export const DesignProperties = () => {
             />
           </form>
         </div>
-        <div>
-          {data && (
-            <select
-              style={{
-                width: "100%",
-                backgroundColor: "rgb(248, 249, 249)",
-                height: "40px",
-                borderRadius: "8px",
-                marginTop: "16px",
-                cursor: "pointer",
-              }}
-              value={groupId ? groupId : ""}
-              onChange={async (e) => {
-                const idNumber = parseInt(e.target.value);
-                const selectImage = data.data.gallery.find((image: any) => {
-                  return image.id === idNumber;
-                });
-                updateGroupId(selectImage.id);
-                const response = await fetch(selectImage.urlImage);
-                const imageBlob = await response.blob();
+        <div className="mt-5">
+          <label htmlFor="">Get image from <b>either gallery or requests</b></label>
+          <div>
+            {data && (
+              <select
+                style={{
+                  width: "100%",
+                  backgroundColor: "rgb(248, 249, 249)",
+                  height: "40px",
+                  borderRadius: "8px",
+                  marginTop: "16px",
+                  cursor: "pointer",
+                }}
+                value={galleryId ? galleryId : ""}
+                onChange={async (e) => {
+                  const idNumber = parseInt(e.target.value);
+                  const selectImage = data.data.gallery.find((image: any) => {
+                    return image.id === idNumber;
+                  });
+                  console.log("ale le: ", selectImage)
+                  setRequestId(null);
+                  setGalleryId(idNumber);
+                  updateGroupId(selectImage.id);
+                  const response = await fetch(selectImage.urlImage);
+                  const imageBlob = await response.blob();
 
-                updateImgBase64Logo(URL.createObjectURL(imageBlob));
-                setImgURL(URL.createObjectURL(imageBlob));
-              }}
-            >
-              <option value="">*Select Art</option>
-              {data.data.gallery.map((art: any) => {
-                return (
-                  <option key={art.id} value={art.id}>
-                    {art.name}
-                  </option>
-                );
-              })}
-            </select>
-          )}
+                  updateImgBase64Logo(URL.createObjectURL(imageBlob));
+                  setImgURL(URL.createObjectURL(imageBlob));
+                }}
+              >
+                <option value="">*Select Art</option>
+                {data.data.gallery.map((art: any) => {
+                  return (
+                    <option key={art.id} value={art.id}>
+                      {art.name}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+          </div>
+          <div>
+            {requestData && (
+              <select
+                style={{
+                  width: "100%",
+                  backgroundColor: "rgb(248, 249, 249)",
+                  height: "40px",
+                  borderRadius: "8px",
+                  marginTop: "16px",
+                  cursor: "pointer",
+                }}
+                value={requestId ? requestId : ""}
+                onChange={async (e) => {
+                  const idNumber = parseInt(e.target.value);
+                  const selectImage = requestData?.data.find((image: any) => {
+                    console.log("gege: ", image)
+                    return image.id === idNumber;
+                  });
+                  console.log("miabivi: ", selectImage)
+                  setGalleryId(null);
+                  setRequestId(idNumber);
+                  updateGroupId(selectImage.id);
+                  const response = await fetch(selectImage.urlImage);
+                  const imageBlob = await response.blob();
+
+                  updateImgBase64Logo(URL.createObjectURL(imageBlob));
+                  setImgURL(URL.createObjectURL(imageBlob));
+                }}
+              >
+                <option value="">*Select request</option>
+                {requestData?.data.map((art: any) => {
+                  return (
+                    <option key={art.id} value={art.id}>
+                      {art.id}
+                    </option>
+                  );
+                })}
+              </select>
+            )}
+          </div>
         </div>
         {/* <div
           style={{
