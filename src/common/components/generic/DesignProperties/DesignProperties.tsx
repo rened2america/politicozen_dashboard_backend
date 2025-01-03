@@ -10,8 +10,8 @@ import {
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import PreviewImage from "../PreviewImage/PreviewImage";
-import { useGetGallery } from "@/app/dashboard2/gallery/useGallery";
-import { useGetAllRequests } from "@/app/dashboard2/requests/useRequests";
+import { useGetGallery } from "@/app/dashboard/gallery/useGallery";
+import { useGetAllRequests } from "@/app/dashboard/requests/useRequests";
 // import PreviewImage from "../PreviewImage/PreviewImage";
 
 export const DesignProperties = () => {

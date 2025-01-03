@@ -26,7 +26,7 @@ import {
 import { labels } from "../data/data";
 import { taskSchema } from "../data/schema";
 import { useRouter } from "next/navigation";
-import { useDeleteProduct } from "@/app/dashboard2/products/useProduct";
+import { useDeleteProduct } from "@/app/dashboard/products/useProduct";
 import { useEffect, useState } from "react";
 import axios from "@/service/axiosInstance";
 import JSZip from "jszip";
@@ -97,7 +97,7 @@ export function DataTableRowActions<TData>({
       <DropdownMenuContent>
         <DropdownMenuItem
           onClick={() => {
-            router.push(`/dashboard2/product/edit/${row.original.id}`);
+            router.push(`/dashboard/product/edit/${row.original.id}`);
           }}
         >
           Edit

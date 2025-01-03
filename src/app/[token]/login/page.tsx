@@ -24,7 +24,7 @@ export default function LoginPage({ params }: LoginPageProps) {
   // Redirect on success
   useEffect(() => {
     if (isSuccess) {
-      router.push("/dashboard2");
+      router.push("/dashboard");
     }
   }, [isSuccess, router]);
 

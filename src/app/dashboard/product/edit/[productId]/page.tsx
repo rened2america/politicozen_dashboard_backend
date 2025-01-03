@@ -3,7 +3,7 @@ import {
   useGetProduct,
   useGetProducts,
   useUpdateProduct,
-} from "@/app/dashboard2/products/useProduct";
+} from "@/app/dashboard/products/useProduct";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,7 +14,7 @@ import { TagsInput } from "react-tag-input-component";
 import "./edit.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SyncLoader from "react-spinners/SyncLoader";
+zzimport SyncLoader from "react-spinners/SyncLoader";
 
 const EditProduct = ({ params }: { params: { productId: string } }) => {
   const router = useRouter();
@@ -131,7 +131,7 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
                 cursor: "pointer",
               }}
               onClick={() => {
-                router.push("/dashboard2/products");
+                router.push("/dashboard/products");
               }}
             >
               <div

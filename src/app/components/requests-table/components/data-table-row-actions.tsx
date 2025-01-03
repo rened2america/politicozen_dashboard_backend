@@ -26,7 +26,7 @@ import {
 import { labels } from "../data/data";
 import { taskSchema } from "../data/schema";
 import { useRouter } from "next/navigation";
-import { useDeleteRequest } from "@/app/dashboard2/requests/useRequests";
+import { useDeleteRequest } from "@/app/dashboard/requests/useRequests";
 import { useEffect, useState } from "react";
 import axios from "@/service/axiosInstance";
 import JSZip from "jszip";
