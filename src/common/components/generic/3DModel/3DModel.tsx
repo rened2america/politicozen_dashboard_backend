@@ -1,5 +1,4 @@
 "use client";
-import { Hoddie } from "@/app/components/hoodie/hoodie";
 import { Mug } from "@/app/components/mug/mug";
 import { Object3D } from "@/app/components/shirt/shirt";
 import { Sweatshirt } from "@/app/components/sweatshirt/sweatshirt";
@@ -9,13 +8,21 @@ import {
   AccumulativeShadows,
   RandomizedLight,
   Environment,
-  OrbitControls,
+  Html,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Suspense } from "react";
+import SyncLoader from "react-spinners/SyncLoader";
 
 export const Model = () => {
   const selectModel = useProductStore((state) => state.selectModel);
-  console.log(selectModel);
+  const Loading = () => {
+    return (
+      <Html center>
+        <SyncLoader />
+      </Html>
+    );
+  };
   return (
     <Canvas
       gl={{ preserveDrawingBuffer: true }}
@@ -32,15 +39,17 @@ export const Model = () => {
       <ambientLight intensity={0.5} />
       <directionalLight intensity={0.5} position={[10, 10, 10]} />
       <Environment preset="city" />
-      {selectModel === "Shirt" ? (
-        <Object3D scale={2} position={[0, 0, 0]} />
-      ) : selectModel === "Hoodie" ? (
-        <NewHoodie />
-      ) : selectModel == "Sweatshirt" ? (
-        <Sweatshirt />
-      ) : (
-        <Mug />
-      )}
+      <Suspense fallback={<Loading />}>
+        {selectModel === "Shirt" ? (
+          <Object3D />
+        ) : selectModel === "Hoodie" ? (
+          <NewHoodie />
+        ) : selectModel == "Sweatshirt" ? (
+          <Sweatshirt />
+        ) : (
+          <Mug />
+        )}
+      </Suspense>
       <AccumulativeShadows
         temporal
         frames={100}
