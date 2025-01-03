@@ -42,6 +42,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
   onDeleteSuccess,
+  handleEdit
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -69,33 +70,6 @@ export function DataTableRowActions<TData>({
     }
   }
 
-  const downloadImages = async (productId: number) => {
-    setLoading(true)
-    const res = await axios.get(`product/allImages/${productId}`)
-
-    let imageUrls = res.data.images.images;
-
-    const zip = new JSZip();
-    const remoteZips = imageUrls.map(async (imageUrl: any, index: number) => {
-      const response = await fetch(imageUrl.url);
-      const data = await response.blob();
-      zip.file(`${index + 1}.webp`, data);
-
-      Promise.all(remoteZips)
-        .then(() => {
-          zip.generateAsync({ type: "blob" }).then((content) => {
-            // give the zip file a name
-            saveAs(content, "mockups.zip");
-          });
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-    });
-
-  }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -111,9 +85,7 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
-          onClick={() => {
-            router.push(`/dashboard2/product/edit/${row.original.id}`);
-          }}
+          onClick={() => handleEdit(row.original)}
         >
           Edit
           <DropdownMenuShortcut>
@@ -128,16 +100,6 @@ export function DataTableRowActions<TData>({
           Delete
           <DropdownMenuShortcut>
             <TrashIcon />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            downloadImages(row.original.id);
-          }}
-        >
-          Download
-          <DropdownMenuShortcut>
-            <DownloadIcon />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

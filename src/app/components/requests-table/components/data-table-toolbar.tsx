@@ -15,6 +15,7 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({
   table,
+  onOpenCreate
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -41,7 +42,7 @@ export function DataTableToolbar<TData>({
         )}
         <Button
             variant="default"
-            onClick={() => table.resetColumnFilters()}
+            onClick={() => onOpenCreate()}
             className="h-8 px-2 lg:px-3"
           >
             Create request

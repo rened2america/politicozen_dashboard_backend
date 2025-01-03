@@ -42,6 +42,8 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
   onDataChange,
+  handleEdit,
+  onOpenCreate,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -68,6 +70,8 @@ export function DataTable<TData, TValue>({
     },
     meta: {
       onDeleteSuccess: handleDeleteSuccess,
+      handleEdit: handleEdit,
+      onOpenCreate,onOpenCreate,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -84,7 +88,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} onOpenCreate={onOpenCreate} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

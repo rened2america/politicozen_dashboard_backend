@@ -84,8 +84,8 @@ export const columns: ColumnDef<Task>[] = [
     id: "actions",
     cell: ({ row, table }) => {
       // Access the onDeleteSuccess callback from table context
-      const { onDeleteSuccess } = table.options.meta || {};
-      return <DataTableRowActions row={row} onDeleteSuccess={onDeleteSuccess} />;
+      const { onDeleteSuccess, handleEdit, onOpenCreate } = table.options.meta || {};
+      return <DataTableRowActions row={row} onDeleteSuccess={onDeleteSuccess} handleEdit={handleEdit} onOpenCreate={onOpenCreate} />;
     },
   },
 ];
