@@ -14,7 +14,7 @@ import { TagsInput } from "react-tag-input-component";
 import "./edit.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-zzimport SyncLoader from "react-spinners/SyncLoader";
+import SyncLoader from "react-spinners/SyncLoader";
 
 const EditProduct = ({ params }: { params: { productId: string } }) => {
   const router = useRouter();
