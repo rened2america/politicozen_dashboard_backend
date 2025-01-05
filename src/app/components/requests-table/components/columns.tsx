@@ -30,8 +30,8 @@ export const columns: ColumnDef<Task>[] = [
         className="translate-y-[2px]"
       />
     ),
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: "id",
@@ -41,8 +41,8 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => (
       <div className="w-[80]">{row.getValue("id")}</div>
     ),
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: "artistName",
@@ -50,8 +50,17 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Artist Name" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("artistName")}</div>,
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "urlImage",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Image" />
+    ),
+    cell: ({ row }) =>  <img src={row.getValue("urlImage")} height={50} width={50} alt={"image"} />,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: "position",
@@ -59,8 +68,8 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Position" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("position")}</div>,
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: "color",
@@ -68,17 +77,26 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Colors" />
     ),
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("color")}</div>,
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
-    accessorKey: "urlImage",
+    accessorKey: "templates",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="color" />
+      <DataTableColumnHeader column={column} title="templates" />
     ),
-    cell: ({ row }) =>  <img src={row.getValue("urlImage")} height={50} width={50} alt={"image"} />,
-    enableSorting: false,
-    enableHiding: false,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("templates")}</div>,
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "isCreated",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created?" />
+    ),
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("isCreated")== true ? "Yes" : "No"}</div>,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     id: "actions",
