@@ -7,6 +7,7 @@ import getCroppedImg from "./cropImage";
 import { useUpdateRequest, useUploadRequest } from "./useRequests";
 import ColorCheckboxes from "@/app/components/color-checkboxes/color-checkboxes";
 import BeatLoader from "react-spinners/BeatLoader";
+import IsCreatedToggle from "@/app/components/iscCreated-toggle/isCreated-toggle";
 
 const CreateEditRequestForm = ({
     isEdit,
@@ -38,7 +39,7 @@ const CreateEditRequestForm = ({
     const { mutate: updateRequestMutate, isSuccess: isUpdateSuccess, isLoading: updateLoading } = useUpdateRequest({
         onSuccess: (response: any) => {
             if (response.status === 200) {
-                handleSuccess("Request created successfully!");
+                handleSuccess("Request updated successfully!");
                 onClose()
             }
         },
@@ -61,6 +62,7 @@ const CreateEditRequestForm = ({
         templates: isEdit ? request.templates : '',
         position: isEdit ? request.position : '',
         colors: isEdit ? request.color : '',
+        isCreated: isEdit ? request.isCreated : false
     });
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -79,6 +81,10 @@ const CreateEditRequestForm = ({
 
     const setLogoPosition = (logoPosition) => {
         setFormData({ ...formData, position: logoPosition })
+    }
+
+    const setIsCreated = (isCreated: boolean) => {
+        setFormData({ ...formData, isCreated: isCreated })
     }
 
     const handleSubmit = async (updatedFormData: any) => {
@@ -168,6 +174,9 @@ const CreateEditRequestForm = ({
                             </div>
                             <div className="w-full">
                                 <ColorCheckboxes colors={formData.colors} setColors={setColors} theme={"light"} />
+                            </div>
+                            <div className="w-full">
+                                <IsCreatedToggle isCreated={formData.isCreated} setIsCreated={setIsCreated} />
                             </div>
                         </div>
                     </div>
