@@ -58,7 +58,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Image" />
     ),
-    cell: ({ row }) =>  <img src={row.getValue("urlImage")} height={50} width={50} alt={"image"} />,
+    cell: ({ row }) => <img src={row.getValue("urlImage")} height={50} width={50} alt={"image"} />,
     enableSorting: true,
     enableHiding: true,
   },
@@ -94,7 +94,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created?" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue("isCreated")== true ? "Yes" : "No"}</div>,
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("isCreated") == true ? "Yes" : "No"}</div>,
     enableSorting: true,
     enableHiding: true,
   },
@@ -102,8 +102,8 @@ export const columns: ColumnDef<Task>[] = [
     id: "actions",
     cell: ({ row, table }) => {
       // Access the onDeleteSuccess callback from table context
-      const { onDeleteSuccess, handleEdit, onOpenCreate } = table.options.meta || {};
-      return <DataTableRowActions row={row} onDeleteSuccess={onDeleteSuccess} handleEdit={handleEdit} onOpenCreate={onOpenCreate} />;
+      const { onDeleteSuccess, handleEdit, onOpenCreate, handleCreateArt } = table.options.meta || {};
+      return <DataTableRowActions row={row} onDeleteSuccess={onDeleteSuccess} handleEdit={handleEdit} onOpenCreate={onOpenCreate} handleCreateArt={handleCreateArt} />;
     },
   },
 ];

@@ -44,6 +44,7 @@ export function DataTable<TData, TValue>({
   onDataChange,
   handleEdit,
   onOpenCreate,
+  handleCreateArt
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -71,7 +72,8 @@ export function DataTable<TData, TValue>({
     meta: {
       onDeleteSuccess: handleDeleteSuccess,
       handleEdit: handleEdit,
-      onOpenCreate,onOpenCreate,
+      onOpenCreate: onOpenCreate,
+      handleCreateArt: handleCreateArt
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,

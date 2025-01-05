@@ -16,6 +16,16 @@ const postUploadRequest = async (data: any) => {
   return res;
 };
 
+const postCreateArtFromRequest = async (data: any) => {
+  const res = await axios
+    .post("product/createGroupFromRequest", data, {})
+    .then((res) => {
+      return res;
+    });
+
+  return res;
+};
+
 const putUploadRequest = async (data: any) => {
   const res = await axios
     .put("politicozen/updateRequest", data, {
@@ -98,6 +108,23 @@ const getAllRequests = async () => {
   });
   console.log(res);
   return res;
+};
+
+export const useCreateArtFromRequest = (options = {}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation((data: any) => postCreateArtFromRequest(data), {
+    ...options,
+    onSuccess: async (response, variables, context) => {
+      // Invalidate and refetch the requests query after successful deletion
+      await queryClient.invalidateQueries(["allRequests"]);
+      
+      // Call the original onSuccess if provided
+      if (options.onSuccess) {
+        options.onSuccess(response, variables, context);
+      }
+    },
+  });
 };
 
 export const useGetAllRequests = () => {

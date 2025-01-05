@@ -42,7 +42,8 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
   onDeleteSuccess,
-  handleEdit
+  handleEdit,
+  handleCreateArt
 }: DataTableRowActionsProps<TData>) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -84,6 +85,14 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuItem
+          onClick={() => handleCreateArt(row.original)}
+        >
+          Create Art
+          <DropdownMenuShortcut>
+            <Pencil2Icon />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => handleEdit(row.original)}
         >

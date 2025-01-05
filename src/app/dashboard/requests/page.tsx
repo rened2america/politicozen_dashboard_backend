@@ -2,31 +2,21 @@
 import { useState, useEffect } from "react";
 import { PageTitle } from "@/common/components/generic/PageTitle/PageTitle";
 import { PageLayout } from "@/common/layouts/PageLayout/PageLayout";
-import { useGetAllRequests, useUploadArt } from "./useRequests";
-import { useDropzone } from "react-dropzone";
-import { IconUpload } from "@/common/components/icons/IconUpload";
-import Image from "next/image";
-import Cropper from "react-easy-crop";
-import getCroppedImg from "./cropImage";
-import BeatLoader from "react-spinners/BeatLoader";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { useGetAllRequests } from "./useRequests";
 import Modal from "./Modal";
 import CreateEditRequestForm from "./CreateEditRequestForm";
-import CategoryDropDown from "@/app/components/category-dropdown/category-dropdown";
-import axios from "@/service/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DataTable } from "@/app/components/requests-table/components/data-table";
 import { columns } from "@/app/components/requests-table/components/columns";
+import CreateArtForm from "./CreateArtForm";
 
 const Requests = () => {
   
   const { data: requestData, isLoading, refetch } = useGetAllRequests();
   const [tableData, setTableData] = useState([]);
-  const [imageName, setImageName] = useState("");
-
-  const [openMenuId, setOpenMenuId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateArtModalOpen, setIsCreateArtModalOpen] = useState(false);
   const [selectedArt, setSelectedArt] = useState(null);
   const [isEdit, setIsEdit] = useState(false)
 
@@ -42,45 +32,21 @@ const Requests = () => {
     setTableData(newData);
   };
 
-
-
-
-
-
-  // const handleSubmit = (imageCrop: any) => {
-  //   if (selectedFile && imageName) {
-  //     const formData = new FormData();
-  //     formData.append("art", selectedFile);
-  //     formData.append("artistName", setArti);
-  //     formData.append("urlImage", imageCrop);
-  //     formData.append("imageCrop", imageCrop);
-  //     formData.append("imageCrop", imageCrop);
-
-  //     // mutate(formData);
-  //   } else {
-  //     // Manejar el caso en que no se haya seleccionado una imagen o no se haya ingresado un nombre
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!isLoadingArt) {
-  //     refetch();
-  //   }
-  // }, [isLoadingArt]);
-
-
   const handleEdit = (img) => {
     setSelectedArt(img);
     setIsEdit(true)
     setIsModalOpen(true);
-    setOpenMenuId(null); // Close the menu
   };
+
+  const handleCreateArt = (request) => {
+    setSelectedArt(request);
+    setIsCreateArtModalOpen(true)
+  }
 
   const onOpenCreate = () => {
     setSelectedArt(null);
     setIsEdit(false)
     setIsModalOpen(true);
-    setOpenMenuId(null);
   }
 
 
@@ -127,6 +93,7 @@ const Requests = () => {
             onDataChange={handleDataChange}
             handleEdit={handleEdit}
             onOpenCreate={onOpenCreate}
+            handleCreateArt={handleCreateArt}
           />
         )}
       </div>
@@ -144,6 +111,14 @@ const Requests = () => {
 
         </Modal>
       )}
+      {
+        isCreateArtModalOpen && (
+          <Modal onClose={() => setIsCreateArtModalOpen(false)}>
+            <CreateArtForm request={selectedArt}
+              onClose={() => setIsModalOpen(false)} handleSuccess={handleSuccess} handleError={handleError} />
+          </Modal>
+        )
+      }
       <ToastContainer
         position="top-right"
         autoClose={5000}
