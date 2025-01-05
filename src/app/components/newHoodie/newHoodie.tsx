@@ -149,8 +149,8 @@ export const NewHoodie = (props: any) => {
         updateOpenToast(true);
         updateTransitionProduct("snapshots");
         const base64 = gl.domElement
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL("image/webp")
+          .replace("image/webp", "image/octet-stream");
         addImageProduct({ white: base64 });
         updateColor(DEFAULT_COLORS.beige);
       }
@@ -160,8 +160,8 @@ export const NewHoodie = (props: any) => {
         materials.mat0.color.r === 0.8962693533719567
       ) {
         const base64 = gl.domElement
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL("image/webp")
+          .replace("image/webp", "image/octet-stream");
         addImageProduct({ beige: base64 });
         updateColor(DEFAULT_COLORS.red);
       }
@@ -171,8 +171,8 @@ export const NewHoodie = (props: any) => {
         materials.mat0.color.r === 1
       ) {
         const base64 = gl.domElement
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL("image/webp")
+          .replace("image/webp", "image/octet-stream");
         addImageProduct({ red: base64 });
         updateColor(DEFAULT_COLORS.blue);
       }
@@ -183,8 +183,8 @@ export const NewHoodie = (props: any) => {
         materials.mat0.color.r === 0.05286064701616472
       ) {
         const base64 = gl.domElement
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL("image/webp")
+          .replace("image/webp", "image/octet-stream");
         addImageProduct({ blue: base64 });
         updateColor(DEFAULT_COLORS.black);
       }
@@ -195,8 +195,8 @@ export const NewHoodie = (props: any) => {
       ) {
         console.log("black");
         const base64 = gl.domElement
-          .toDataURL("image/png")
-          .replace("image/png", "image/octet-stream");
+          .toDataURL("image/webp")
+          .replace("image/webp", "image/octet-stream");
         addImageProduct({ black: base64 });
         updateSave(false);
         updateResetProductColor(true);

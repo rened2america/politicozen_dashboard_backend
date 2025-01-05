@@ -111,7 +111,7 @@ const CroppingSection: React.FC<CroppingSectionProps> = ({
             File is larger than 30 Mb
           </div>
         ) : (
-          <div className="text-white">Upload logo in PNG</div>
+          <div className="text-white">Upload logo in PNG/WEBP</div>
         )}
         <div className="text-white ml-2 p-1 border border-gray-500 rounded-full">
           <IconUpload />
