@@ -25,13 +25,15 @@ const NewHome = () => {
   const { data } = useGetProducts();
   const { data: orders, isLoading } = useGetOrders();
   const [dataValue, setDatavalue] = useState(initialData);
-
+  const convertCentsToDollars = (cents: string) => {
+    return (parseInt(cents) / 100)
+  }
   const DashboardCard = [
     {
       name: "Total Revenue",
       bgcolor: "bg-yellow-200",
       textColor: "text-black",
-      data: orders?.data.amount,
+      data: convertCentsToDollars(orders?.data.amount),
     },
     {
       name: "Total Sales",
