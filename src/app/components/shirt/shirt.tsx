@@ -109,7 +109,7 @@ export const Object3D = (props: any) => {
         subtitle,
         price,
         description,
-        type: "Shirt",
+        type: "T-Shirt",
         tags,
         groupId,
       });
