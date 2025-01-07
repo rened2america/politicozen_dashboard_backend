@@ -11,19 +11,19 @@ import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import PreviewImage from "../PreviewImage/PreviewImage";
 import { useGetGallery } from "@/app/dashboard/gallery/useGallery";
-import { useGetAllRequests } from "@/app/dashboard/requests/useRequests";
+// import { useGetAllRequests } from "@/app/dashboard/requests/useRequests";
 // import PreviewImage from "../PreviewImage/PreviewImage";
 
 export const DesignProperties = () => {
   const [imgURL, setImgURL] = useState<string>("");
   const [prevIma, setPrevIma] = useState(true);
   const { data } = useGetGallery();
-  const { data: requestData, isLoading, refetch } = useGetAllRequests();
+  // const { data: requestData, isLoading, refetch } = useGetAllRequests();
   const updateGroupId = useProductStore((state) => state.updateGroupId);
   const groupId = useProductStore((state) => state.groupId);
 
-  const [galleryId, setGalleryId] = useState<number | null>(null);
-  const [requestId, setRequestId] = useState<number | null>(null);
+  // const [galleryId, setGalleryId] = useState<number | null>(null);
+  // const [requestId, setRequestId] = useState<number | null>(null);
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
@@ -336,7 +336,7 @@ export const DesignProperties = () => {
           </form>
         </div>
         <div className="mt-5">
-          <label htmlFor="">Get image from <b>either gallery or requests</b></label>
+          <label className="font-bold">Select image from gallery</label>
           <div>
             {data && (
               <select
@@ -348,15 +348,14 @@ export const DesignProperties = () => {
                   marginTop: "16px",
                   cursor: "pointer",
                 }}
-                value={galleryId ? galleryId : ""}
+                value={groupId ? groupId : ""}
                 onChange={async (e) => {
                   const idNumber = parseInt(e.target.value);
                   const selectImage = data.data.gallery.find((image: any) => {
                     return image.id === idNumber;
                   });
-                  console.log("ale le: ", selectImage)
-                  setRequestId(null);
-                  setGalleryId(idNumber);
+                  // setRequestId(null);
+                  // setGalleryId(idNumber);
                   updateGroupId(selectImage.id);
                   const response = await fetch(selectImage.urlImage);
                   const imageBlob = await response.blob();
@@ -375,7 +374,7 @@ export const DesignProperties = () => {
               </select>
             )}
           </div>
-          <div>
+          {/* <div>
             {requestData && (
               <select
                 style={{
@@ -390,10 +389,8 @@ export const DesignProperties = () => {
                 onChange={async (e) => {
                   const idNumber = parseInt(e.target.value);
                   const selectImage = requestData?.data.find((image: any) => {
-                    console.log("gege: ", image)
                     return image.id === idNumber;
                   });
-                  console.log("miabivi: ", selectImage)
                   setGalleryId(null);
                   setRequestId(idNumber);
                   updateGroupId(selectImage.id);
@@ -414,7 +411,7 @@ export const DesignProperties = () => {
                 })}
               </select>
             )}
-          </div>
+          </div> */}
         </div>
         {prevIma && <PreviewImage imageFile={imgURL} />}
       </div>
