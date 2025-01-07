@@ -7,13 +7,14 @@ import {
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ReactTags } from "react-tag-autocomplete";
 import { TagsInput } from "react-tag-input-component";
 import "./edit.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Radio, RadioGroup } from "@headlessui/react";
 import SyncLoader from "react-spinners/SyncLoader";
 
 const EditProduct = ({ params }: { params: { productId: string } }) => {
@@ -32,8 +33,57 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
     formState: { errors },
   } = useForm();
   const [selected, setSelected] = useState<string[]>([]);
-  const onSubmit = (data) => mutate({ ...data, tags: selected });
-  console.log(data);
+  const onSubmit = (data: any) => mutate({ ...data, tags: selected });
+
+  // Initialize selectedColor as a string
+  const [selectedColor, setSelectedColor] = useState<string>("White");
+
+  // Get product types
+  const productTypes = data?.data.productFromDb.types.map((type: any) =>
+    type.value.toLowerCase()
+  );
+
+  // Check if the product is a poster or canvas
+  const isPosterOrCanvas =
+    productTypes?.includes("poster") || productTypes?.includes("canvas");
+
+  // Adjust selectedDesign calculation
+  let selectedDesign;
+
+  if (isPosterOrCanvas) {
+    // For posters or canvases, use the first design available
+    selectedDesign = data?.data.productFromDb.design[0];
+  } else {
+    // For other products, find the design based on selectedColor
+    selectedDesign = data?.data.productFromDb.design.find(
+      (designItem: any) =>
+        designItem.variant.toLowerCase() === selectedColor.toLowerCase()
+    );
+  }
+
+  // Adjust availableSizes calculation
+  let availableSizes;
+
+  if (isPosterOrCanvas) {
+    // For posters or canvases, get all unique sizes
+    availableSizes = [
+      ...new Set(
+        data?.data.productFromDb.design.map(
+          (designItem: any) => designItem.size
+        )
+      ),
+    ];
+  } else {
+    // For other products, get sizes based on selected color
+    availableSizes = data?.data.productFromDb.design
+      .filter(
+        (designItem: any) =>
+          designItem.variant.toLowerCase() === selectedColor.toLowerCase()
+      )
+      .map((designItem: any) => designItem.size);
+
+    availableSizes = [...new Set(availableSizes)];
+  }
 
   useEffect(() => {
     if (!isLoading) {
@@ -42,37 +92,21 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
         description: data?.data.productFromDb.description,
         id: data?.data.productFromDb.id,
       });
-      // const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
-      // console.log("se ejecuto", tagList);
-
-      // if (tagList) {
-      //   setSelected(tagList);
-      // }
     }
   }, [isLoading]);
 
-  // useEffect(() => {
-  //   const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
-
-  //   if (tagList && tagList.length > 0) {
-  //     console.log("inside tagList", tagList);
-  //     setSelected((prevValue) => {
-  //       if (prevValue.length > 0) return prevValue;
-  //       return tagList;
-  //     });
-  //   }
-  // }, [data?.data.productFromDb.tag]);
-
   useEffect(() => {
     if (isSuccessGetProduct) {
-      const tagList = data?.data.productFromDb.tag.map((tag) => tag.value);
-      console.log("se ejecuto", tagList);
-
+      const tagList = data?.data.productFromDb.tag.map((tag: any) => tag.value);
       if (tagList) {
         setSelected(tagList);
       }
+      // Set the default selected color
+      if (!isPosterOrCanvas) {
+        setSelectedColor(data?.data.productFromDb.colors[0].value);
+      }
     }
-  }, [isSuccessGetProduct]);
+  }, [isSuccessGetProduct, data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -84,332 +118,181 @@ const EditProduct = ({ params }: { params: { productId: string } }) => {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          height: "100vh",
-          width: "100%",
-          display: "grid",
-          placeItems: "center",
-        }}
-      >
+      <div className="h-screen w-full grid place-items-center">
         <SyncLoader loading={isLoading} color="black" />
       </div>
     );
   }
 
+  function classNames(...classes: string[]) {
+    return classes.filter(Boolean).join(" ");
+  }
+
   return (
-    <div
-      style={{
-        height: "100%",
-        display: "grid",
-        justifyItems: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateRows: "80px 1fr",
-          width: "900px",
-          padding: "56px 0",
-        }}
-      >
-        <div>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8">
+        <div className="flex justify-between items-center mb-8">
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "120px 1fr 128px",
-              borderRadius: "8px",
-              border: "1px solid rgb(212, 212, 216)",
-              padding: "8px 8px",
-            }}
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => router.push("/dashboard/products")}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 2fr",
-                placeContent: "center",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                router.push("/dashboard/products");
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  placeItems: "center",
-                }}
-              >
-                <ArrowLeftIcon />
-              </div>
-              <span
-                style={{
-                  display: "grid",
-                  justifyItems: "start",
-                }}
-              >
-                Products
-              </span>
-            </div>
-            <div
-              style={{
-                fontSize: "24px",
-                fontWeight: "500",
-                display: "grid",
-                alignItems: "center",
-              }}
-            >
-              {data?.data.productFromDb.title}
-            </div>
-            <div>
-              <div
-                onClick={handleSubmit(onSubmit)}
-                style={{
-                  padding: "8px",
-                  borderRadius: "8px",
-                  backgroundColor: "black",
-                  textAlign: "center",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                Save
-              </div>
-            </div>
+            <ArrowLeftIcon className="w-6 h-6" />
+            <span className="text-lg">Products</span>
+            <h2 className="text-xl font-bold">
+              /{data?.data.productFromDb.title}
+            </h2>
           </div>
+          <button
+            onClick={handleSubmit(onSubmit)}
+            className="px-4 py-2 bg-black text-white rounded-lg"
+          >
+            Save
+          </button>
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 400px",
-            paddingTop: "16px",
-          }}
-        >
-          <div
-            style={{
-              overflowY: "auto",
-              display: "grid",
-              justifyItems: "center",
-            }}
-          >
-            <div
-              style={{
-                width: "500px",
-                border: "1px solid rgb(212, 212, 216)",
-                borderRadius: "16px",
-                display: "grid",
-                justifyItems: "center",
-                alignItems: "center",
-              }}
-            >
-              <form
-                style={{
-                  display: "grid",
-                  justifyItems: "center",
-                  alignItems: "center",
-                  gridTemplateRows: "repeat(auto-fit, 48px)",
-                  gap: "16px",
-                  marginTop: "16px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "grid",
-                    justifyItems: "start",
-                    width: "256px",
-                  }}
-                >
-                  <label htmlFor="name">Title</label>
-                  {/* use aria-invalid to indicate field contain error */}
-                  <input
-                    id="name"
-                    style={{
-                      width: "100%",
-                      border: "1px solid rgb(212, 212, 216)",
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      fontSize: "14px",
-                    }}
-                    aria-invalid={errors.name ? "true" : "false"}
-                    {...register("name", {
-                      required: true,
-                      maxLength: 40,
-                      minLength: 8,
-                    })}
-                  />
-                  {/* use role="alert" to announce the error message */}
-                  {errors.name && errors.name.type === "required" && (
-                    <span role="alert">This is required</span>
-                  )}
-                  {errors.name && errors.name.type === "maxLength" && (
-                    <span role="alert">Max length exceeded</span>
-                  )}
-                  {errors.name && errors.name.type === "minLength" && (
-                    <span role="alert">Min length 8</span>
-                  )}
-                </div>
-                <div
-                  style={{
-                    width: "256px",
-                  }}
-                >
-                  <label htmlFor="name">Description</label>
-                  {/* use aria-invalid to indicate field contain error */}
-                  <textarea
-                    id="description"
-                    style={{
-                      width: "100%",
-                      height: "80px",
-                      resize: "none",
-                      border: "1px solid rgb(212, 212, 216)",
-                      borderRadius: "8px",
-                      padding: "4px 8px",
-                      fontSize: "14px",
-                    }}
-                    aria-invalid={errors.description ? "true" : "false"}
-                    {...register("description", {
-                      required: false,
-                      maxLength: 280,
-                    })}
-                  />
-                  <div>
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: "700",
-                      }}
-                    >
-                      {watch("description") ? watch("description").length : "0"}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      /280
-                    </span>
-                  </div>
 
-                  {/* use role="alert" to announce the error message */}
-                  {errors.description &&
-                    errors.description.type === "required" && (
-                      <span role="alert">This is required</span>
-                    )}
-                  {errors.description &&
-                    errors.description.type === "maxLength" && (
-                      <span role="alert">Max length exceeded</span>
-                    )}
-                </div>
-
-                <div
-                  style={{
-                    width: "256px",
-                  }}
-                >
-                  <div>Tags</div>
-                  {selected && (
-                    <TagsInput
-                      value={selected}
-                      onChange={setSelected}
-                      name="fruits"
-                      placeHolder="Enter Tags"
-                    />
-                  )}
-
-                  <p
-                    id="custom-tags-description"
-                    style={{ color: "gray", fontSize: "13px" }}
-                  >
-                    <em>Max of 3 tags allowed.</em>
-                  </p>
-                </div>
-              </form>
-            </div>
+        <div className="grid w-full grid-cols-1 lg:grid-cols-12 items-start gap-x-6 gap-y-8 sm:grid-cols-24 lg:gap-x-8">
+          <div className="overflow-hidden h-full rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
+            <Image
+              src={selectedDesign?.url}
+              width={700}
+              height={700}
+              className="object-contain object-center w-full h-full"
+              alt={data?.data.productFromDb.title}
+            />
           </div>
-          <div
-            style={{
-              display: "grid",
-              justifyItems: "end",
-            }}
-          >
-            <div
-              style={{
-                display: "grid",
-                justifyItems: "center",
-                padding: "8px",
-                border: "1px solid rgb(212, 212, 216)",
-                borderRadius: "24px",
-              }}
-            >
-              <Image
-                src={data?.data.productFromDb.design[0].url}
-                width="300"
-                height="260"
-                style={{
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "16px",
-                }}
-                alt={data?.data.productFromDb.title}
-              />
-              <div>Sizes</div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  // gridTemplateColumns: "48px 48px 48px",
-                  gap: "8px",
-                }}
-              >
-                {data?.data.productFromDb.sizes &&
-                  data?.data.productFromDb.sizes.map((size) => {
-                    return (
-                      <div
-                        key={size.id}
-                        style={{
-                          width: "48px",
-                          height: "24px",
-                          border: "1px solid black",
-                          display: "grid",
-                          placeContent: "center",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {size.value}
-                      </div>
-                    );
+          <div className="sm:col-span-8 lg:col-span-7">
+            <form className="space-y-6">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 "
+                >
+                  Title
+                </label>
+                <input
+                  id="name"
+                  className="w-full border border-gray-300 rounded-lg p-2 text-sm mt-1"
+                  aria-invalid={errors.name ? "true" : "false"}
+                  {...register("name", {
+                    required: true,
+                    maxLength: 40,
+                    minLength: 8,
                   })}
+                />
+                {errors.name && errors.name.type === "required" && (
+                  <span role="alert" className="text-red-500 text-sm">
+                    This is required
+                  </span>
+                )}
+                {errors.name && errors.name.type === "maxLength" && (
+                  <span role="alert" className="text-red-500 text-sm">
+                    Max length exceeded
+                  </span>
+                )}
+                {errors.name && errors.name.type === "minLength" && (
+                  <span role="alert" className="text-red-500 text-sm">
+                    Min length 8
+                  </span>
+                )}
               </div>
-              <div> Color</div>
-              <div
-                style={{
-                  display: "flex",
-                  fontSize: "14px",
-                  // gridTemplateColumns: "repeat(auto-fit , minmax(48px, 1fr))",
-                  flexDirection: "row",
-                  gap: "8px",
-                }}
-              >
-                {data?.data.productFromDb.sizes &&
-                  data?.data.productFromDb.colors.map((color) => {
-                    return (
-                      <div
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  className="w-full h-24 resize-none border border-gray-300 rounded-lg p-2 text-sm mt-1"
+                  aria-invalid={errors.description ? "true" : "false"}
+                  {...register("description", {
+                    required: false,
+                    maxLength: 280,
+                  })}
+                />
+                <div className="text-right text-sm text-gray-500 mt-1">
+                  <span className="font-bold">
+                    {watch("description") ? watch("description").length : "0"}
+                  </span>
+                  /280
+                </div>
+                {errors.description &&
+                  errors.description.type === "maxLength" && (
+                    <span role="alert" className="text-red-500 text-sm">
+                      Max length exceeded
+                    </span>
+                  )}
+              </div>
+              <div className="m-0">
+                <label className="m-0 block text-sm font-medium text-gray-700">
+                  Tags
+                </label>
+                {selected && (
+                  <TagsInput
+                    value={selected}
+                    onChange={setSelected}
+                    name="tags"
+                    placeHolder="Enter Tags"
+                  />
+                )}
+                <p
+                  id="custom-tags-description"
+                  className="text-gray-500 text-sm mt-1"
+                >
+                  <em>Max of 3 tags allowed.</em>
+                </p>
+              </div>
+            </form>
+
+            {/* Conditionally render color selection */}
+            {!isPosterOrCanvas && (
+              <fieldset aria-label="Choose a color" className="mt-4">
+                <legend className="text-sm font-medium text-gray-900">Color</legend>
+
+                <RadioGroup
+                  value={selectedColor}
+                  onChange={setSelectedColor}
+                  className="mt-4 flex items-center space-x-3"
+                >
+                  {data?.data.productFromDb.colors &&
+                    data?.data.productFromDb.colors.map((color: any) => (
+                      <Radio
                         key={color.id}
-                        style={{
-                          width: "48px",
-                          height: "24px",
-                          border: "1px solid black",
-                          display: "grid",
-                          placeContent: "center",
-                          borderRadius: "8px",
-                        }}
+                        value={color.value}
+                        aria-label={color.value}
+                        className={classNames(
+                          selectedColor === color.value
+                            ? "ring-2 ring-offset-1 ring-black"
+                            : "",
+                          "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
+                        )}
                       >
-                        {color.value}
-                      </div>
-                    );
-                  })}
+                        <span
+                          aria-hidden="true"
+                          style={{ backgroundColor: color.value.toLowerCase() }}
+                          className="h-8 w-8 rounded-full border border-black border-opacity-10"
+                        />
+                      </Radio>
+                    ))}
+                </RadioGroup>
+              </fieldset>
+            )}
+
+            {/* Display Available Sizes */}
+            <fieldset aria-label="Available sizes" className="mt-10">
+              <div className="text-sm font-medium text-gray-900">Available Sizes</div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {availableSizes.map((size: string) => (
+                  <span
+                    key={size}
+                    className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium uppercase"
+                  >
+                    {size}
+                  </span>
+                ))}
               </div>
-            </div>
+            </fieldset>
           </div>
         </div>
       </div>
