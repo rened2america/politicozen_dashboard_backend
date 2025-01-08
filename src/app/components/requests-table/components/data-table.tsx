@@ -29,6 +29,7 @@ import { DataTablePagination } from "../components/data-table-pagination";
 import { DataTableToolbar } from "../components/data-table-toolbar";
 import Link from "next/link";
 import SyncLoader from "react-spinners/SyncLoader";
+import { Button } from "@radix-ui/themes";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -141,18 +142,21 @@ export function DataTable<TData, TValue>({
                   className="h-24 text-center"
                 >
                   <div className="w-full grid place-items-center">
-                    <div className="grid gap-2 p-8 w-[300px] text-center">
-                      <div className="text-lg font-bold">Welcome to your Products</div>
+                    <div className="grid gap-2 p-8 w-[400px] text-center">
+                      <div className="text-lg font-bold">Welcome to your Requests</div>
                       <div className="text-sm font-bold text-gray-500">
-                        You'll find products here once you create one.
+                        You'll find requests here once you create one.
                       </div>
                       <div className="text-sm font-medium text-gray-500">
-                        Go create your first product
+                        Go create your first request
                       </div>
-                      <div className="text-center w-full font-bold bg-yellow-200 w-4/5 h-10 rounded-md">
-                        <Link href="/dashboard/product/new" className="w-full h-full grid place-items-center">
-                          Create product
-                        </Link>
+                      <div className="mx-auto w-4/5 h-10 rounded-md bg-yellow-200 font-bold flex items-center justify-center">
+                        <button
+                          onClick={() => onOpenCreate()}
+                          className="w-full h-full"
+                        >
+                          Create Request
+                        </button>
                       </div>
                     </div>
                   </div>
