@@ -2,37 +2,28 @@
 
 import * as THREE from "three";
 import { useEffect, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import {
   useGLTF,
   useTexture,
-  OrbitControls,
   PivotControls,
-  AccumulativeShadows,
-  RandomizedLight,
   Decal,
-  Html,
 } from "@react-three/drei";
-import { useControls, button } from "leva";
-// import { useProduct } from "./useProduct";
-import AWS from "aws-sdk";
 import { useProductStore } from "@/store/productStore";
 import { easing } from "maath";
 import { useProduct } from "../shirt/useProduct";
+import { getAvailableColors } from "@/common/constants/allColors";
 //@ts-nocheck
 
-const DEFAULT_COLORS = {
-  white: "#f0f8ff",
-  beige: "#F3E5AB",
-  red: "#FF0000",
-  blue: "#4169e1",
-  black: "#313131",
-};
+const DEFAULT_COLORS = getAvailableColors("hoodie");
+console.log("DEFAULT_COLORS: ", DEFAULT_COLORS)
+// Color sequence for processing
+const COLOR_SEQUENCE = Object.entries(DEFAULT_COLORS).map(([key]) => key);
+console.log("COLOR_SEQUENCE: ", DEFAULT_COLORS)
+type ColorKey = keyof typeof DEFAULT_COLORS;
 
 export const NewHoodie = (props: any) => {
   const gl = useThree((state) => state.gl);
-  const [pos, setXYZ] = useState([0, 0, 0.1]);
-  const [rot, setRot] = useState([0, 0, 0]);
   const position = useProductStore((state) => {
     return { x: state.x, y: state.y, z: state.z };
   });
@@ -47,6 +38,8 @@ export const NewHoodie = (props: any) => {
   const { mutate: createProduct, isLoading, isSuccess } = useProduct();
   const save = useProductStore((state) => state.save);
   const updateSave = useProductStore((state) => state.updateSave);
+  const saveStep = useProductStore((state) => state.saveStep);
+  const updateSaveStep = useProductStore((state) => state.updateSaveStep);
   const addImageProduct = useProductStore((state) => state.addNewImgProduct);
   const imagesProduct = useProductStore((state) => state.imgProduct);
   const colorsSelected = useProductStore((state) => state.colorsSelected);
@@ -70,11 +63,15 @@ export const NewHoodie = (props: any) => {
   const price = useProductStore((state) => state.price)
   const resetProductColor = useProductStore((state) => state.resetProductColor);
 
-  useEffect(
-    () => console.log("transitionProduct: ", transitionProduct),
-    [transitionProduct]
-  );
-  useEffect(() => console.log("openToast: ", openToast), [openToast]);
+  const [userSelectedColor, setUserSelectedColor] = useState(color);
+
+  // Update userSelectedColor when color changes via eye button
+  useEffect(() => {
+    if (!save) {
+      setUserSelectedColor(color);
+    }
+  }, [color, save]);
+
   useEffect(() => {
     if (isSuccess) {
       updateTransitionProduct("saved");
@@ -83,20 +80,17 @@ export const NewHoodie = (props: any) => {
       }, 5000);
 
       return () => {
-        clearInterval(closeToast);
+        clearTimeout(closeToast);
       };
     }
   }, [isSuccess]);
 
   useEffect(() => {
-    if (
-      imagesProduct.white.length > 0 &&
-      imagesProduct.beige.length > 0 &&
-      imagesProduct.red.length > 0 &&
-      imagesProduct.blue.length > 0 &&
-      imagesProduct.black.length > 0
-    ) {
-      console.log("Creando Producto");
+    const allImagesComplete = COLOR_SEQUENCE.every(
+      (colorKey) => imagesProduct[colorKey]?.length > 0
+    );
+    if (allImagesComplete) {
+      console.log("Creating Product");
       console.log(imagesProduct);
       //@ts-ignore
       createProduct({
@@ -116,94 +110,76 @@ export const NewHoodie = (props: any) => {
         groupId,
       });
       updateTransitionProduct("saving");
-
-      addImageProduct({
-        white: "",
-        beige: "",
-        red: "",
-        blue: "",
-        black: "",
-      });
+      // Reset imagesProduct
+      addImageProduct(
+        Object.fromEntries(COLOR_SEQUENCE.map(color => [color, ""])) as Record<ColorKey, string>
+      );
     }
-  }, [
-    imagesProduct.white,
-    imagesProduct.beige,
-    imagesProduct.red,
-    imagesProduct.blue,
-    imagesProduct.black,
-  ]);
+  }, [imagesProduct]);
+
+  // Utility function to compare colors with tolerance
+  const colorsMatch = (color1: THREE.Color, color2Hex: string) => {
+    const color2 = new THREE.Color(color2Hex);
+    const tolerance = 0.01;
+    return (
+      Math.abs(color1.r - color2.r) < tolerance &&
+      Math.abs(color1.g - color2.g) < tolerance &&
+      Math.abs(color1.b - color2.b) < tolerance
+    );
+  };
+
+   // Function to process current color step
+    const processColorStep = (currentStep: number, delta: number) => {
+      if (currentStep >= COLOR_SEQUENCE.length) {
+        // All steps completed
+        updateSave(false);
+        updateResetProductColor(true);
+        updateSaveStep(0);
+        updateColor(userSelectedColor);
+        return;
+      }
+  
+      const currentColor = COLOR_SEQUENCE[currentStep];
+      const colorHex = DEFAULT_COLORS[currentColor];
+  
+      // Update color
+      updateColor(colorHex);
+      easing.dampC(
+        materials.mat0.color,
+        new THREE.Color(colorHex),
+        0.2,
+        delta
+      );
+      easing.dampC(
+        materials.mat0.color,
+        new THREE.Color(colorHex),
+        0.2,
+        delta
+      );
+  
+      // Check if color transition is complete
+      if (
+        colorsMatch(materials.mat0.color, colorHex)
+      ) {
+        // Capture image for first color
+        if (currentStep === 0) {
+          updateOpenToast(true);
+          updateTransitionProduct("snapshots");
+        }
+  
+        const base64 = gl.domElement.toDataURL("image/webp");
+        addImageProduct({ [currentColor]: base64 });
+        updateSaveStep(currentStep + 1);
+      }
+    };
 
   useFrame((state, delta) => {
     if (save) {
-      if (resetProductColor) {
-        updateColor(DEFAULT_COLORS.white);
-        easing.dampC(materials.mat0.color, DEFAULT_COLORS.white, 0, delta);
-        updateResetProductColor(false);
-        setTimeout(() => {}, 1000);
-      }
-      if (
-        materials.mat0.color.b === 1 &&
-        materials.mat0.color.g === 0.9386857284565036 &&
-        materials.mat0.color.r === 0.8713671191959567
-      ) {
-        updateOpenToast(true);
-        updateTransitionProduct("snapshots");
-        const base64 = gl.domElement
-          .toDataURL("image/webp")
-          .replace("image/webp", "image/octet-stream");
-        addImageProduct({ white: base64 });
-        updateColor(DEFAULT_COLORS.beige);
-      }
-      if (
-        materials.mat0.color.b === 0.407240211891531 &&
-        materials.mat0.color.g === 0.783537791521566 &&
-        materials.mat0.color.r === 0.8962693533719567
-      ) {
-        const base64 = gl.domElement
-          .toDataURL("image/webp")
-          .replace("image/webp", "image/octet-stream");
-        addImageProduct({ beige: base64 });
-        updateColor(DEFAULT_COLORS.red);
-      }
-      if (
-        materials.mat0.color.b === 0 &&
-        materials.mat0.color.g === 0 &&
-        materials.mat0.color.r === 1
-      ) {
-        const base64 = gl.domElement
-          .toDataURL("image/webp")
-          .replace("image/webp", "image/octet-stream");
-        addImageProduct({ red: base64 });
-        updateColor(DEFAULT_COLORS.blue);
-      }
-
-      if (
-        materials.mat0.color.b === 0.7529422167708612 &&
-        materials.mat0.color.g === 0.1412632911304446 &&
-        materials.mat0.color.r === 0.05286064701616472
-      ) {
-        const base64 = gl.domElement
-          .toDataURL("image/webp")
-          .replace("image/webp", "image/octet-stream");
-        addImageProduct({ blue: base64 });
-        updateColor(DEFAULT_COLORS.black);
-      }
-      if (
-        materials.mat0.color.b === 0.030713443727452196 &&
-        materials.mat0.color.g === 0.030713443727452196 &&
-        materials.mat0.color.r === 0.030713443727452196
-      ) {
-        console.log("black");
-        const base64 = gl.domElement
-          .toDataURL("image/webp")
-          .replace("image/webp", "image/octet-stream");
-        addImageProduct({ black: base64 });
-        updateSave(false);
-        updateResetProductColor(true);
-      }
-    }
-
-    easing.dampC(materials.mat0.color, color, 0.2, delta);
+      processColorStep(saveStep, delta);
+    } else{
+      // Apply the current color
+      easing.dampC(materials.mat0.color, color, 0.2, delta);
+    }  
   });
 
   // @ts-ignore
