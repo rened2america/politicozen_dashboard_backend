@@ -12,15 +12,15 @@ import {
 import { useProduct } from "./useProduct";
 import { useProductStore } from "@/store/productStore";
 import { easing } from "maath";
+import { getAvailableColors } from "@/common/constants/allColors";
 //@ts-nocheck
 
-const DEFAULT_COLORS = {
-  white: "#f0f8ff",
-  beige: "#F3E5AB",
-  red: "#FF0000",
-  blue: "#4169e1",
-  black: "#313131",
-};
+const DEFAULT_COLORS = getAvailableColors("sweatshirt");
+console.log("DEFAULT_COLORS: ", DEFAULT_COLORS)
+// Color sequence for processing
+const COLOR_SEQUENCE = Object.entries(DEFAULT_COLORS).map(([key]) => key);
+console.log("COLOR_SEQUENCE: ", DEFAULT_COLORS)
+type ColorKey = keyof typeof DEFAULT_COLORS;
 
 export const Object3D = (props: any) => {
   const gl = useThree((state) => state.gl);
@@ -87,13 +87,10 @@ export const Object3D = (props: any) => {
   }, [isSuccess]);
 
   useEffect(() => {
-    if (
-      imagesProduct.white.length > 0 &&
-      imagesProduct.beige.length > 0 &&
-      imagesProduct.red.length > 0 &&
-      imagesProduct.blue.length > 0 &&
-      imagesProduct.black.length > 0
-    ) {
+    const allImagesComplete = COLOR_SEQUENCE.every(
+      (colorKey) => imagesProduct[colorKey]?.length > 0
+    );
+    if (allImagesComplete) {
       console.log("Creating Product");
       console.log(imagesProduct);
       //@ts-ignore
@@ -115,94 +112,13 @@ export const Object3D = (props: any) => {
       });
       updateTransitionProduct("saving");
       // Reset imagesProduct
-      addImageProduct({
-        white: "",
-        beige: "",
-        red: "",
-        blue: "",
-        black: "",
-      });
+      addImageProduct(
+        Object.fromEntries(COLOR_SEQUENCE.map(color => [color, ""])) as Record<ColorKey, string>
+      );
     }
-  }, [
-    imagesProduct.white,
-    imagesProduct.beige,
-    imagesProduct.red,
-    imagesProduct.blue,
-    imagesProduct.black,
-  ]);
+  }, [imagesProduct]);
 
-  useFrame((state, delta) => {
-    if (save) {
-      switch (saveStep) {
-        case 0:
-          // Reset to white color
-          updateColor(DEFAULT_COLORS.white);
-          easing.dampC(materials.lambert1.color, DEFAULT_COLORS.white, 0.2, delta);
-          if (colorsMatch(materials.lambert1.color, DEFAULT_COLORS.white)) {
-            updateOpenToast(true);
-            updateTransitionProduct("snapshots");
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ white: base64 });
-            updateSaveStep(1); // Proceed to next step
-          }
-          break;
-        case 1:
-          // Change to beige color
-          updateColor(DEFAULT_COLORS.beige);
-          easing.dampC(materials.lambert1.color, DEFAULT_COLORS.beige, 0.2, delta);
-          if (colorsMatch(materials.lambert1.color, DEFAULT_COLORS.beige)) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ beige: base64 });
-            updateSaveStep(2);
-          }
-          break;
-        case 2:
-          // Change to red color
-          updateColor(DEFAULT_COLORS.red);
-          easing.dampC(materials.lambert1.color, DEFAULT_COLORS.red, 0.2, delta);
-          if (colorsMatch(materials.lambert1.color, DEFAULT_COLORS.red)) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ red: base64 });
-            updateSaveStep(3);
-          }
-          break;
-        case 3:
-          // Change to blue color
-          updateColor(DEFAULT_COLORS.blue);
-          easing.dampC(materials.lambert1.color, DEFAULT_COLORS.blue, 0.2, delta);
-          if (colorsMatch(materials.lambert1.color, DEFAULT_COLORS.blue)) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ blue: base64 });
-            updateSaveStep(4);
-          }
-          break;
-        case 4:
-          // Change to black color
-          updateColor(DEFAULT_COLORS.black);
-          easing.dampC(materials.lambert1.color, DEFAULT_COLORS.black, 0.2, delta);
-          if (colorsMatch(materials.lambert1.color, DEFAULT_COLORS.black)) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ black: base64 });
-            updateSaveStep(5);
-          }
-          break;
-        case 5:
-          // All steps completed
-          updateSave(false);
-          updateResetProductColor(true);
-          updateSaveStep(0); // Reset for next save  
-          // Reset to user-selected color
-          updateColor(userSelectedColor);
-          break;
-        default:
-          break;
-      }
-    }
-
-    // Apply the current color
-    easing.dampC(materials.lambert1.color, color, 0.2, delta);
-  });
-
+  // Utility function to compare colors with tolerance
   const colorsMatch = (color1: THREE.Color, color2Hex: string) => {
     const color2 = new THREE.Color(color2Hex);
     const tolerance = 0.01;
@@ -212,6 +128,59 @@ export const Object3D = (props: any) => {
       Math.abs(color1.b - color2.b) < tolerance
     );
   };
+  // Function to process current color step
+  const processColorStep = (currentStep: number, delta: number) => {
+    if (currentStep >= COLOR_SEQUENCE.length) {
+      // All steps completed
+      updateSave(false);
+      updateResetProductColor(true);
+      updateSaveStep(0);
+      updateColor(userSelectedColor);
+      return;
+    }
+
+    const currentColor = COLOR_SEQUENCE[currentStep];
+    const colorHex = DEFAULT_COLORS[currentColor];
+
+    // Update color
+    updateColor(colorHex);
+    easing.dampC(
+      materials.lambert1.color,
+      new THREE.Color(colorHex),
+      0.2,
+      delta
+    );
+    easing.dampC(
+      materials.lambert1.color,
+      new THREE.Color(colorHex),
+      0.2,
+      delta
+    );
+
+    // Check if color transition is complete
+    if (
+      colorsMatch(materials.lambert1.color, colorHex)
+    ) {
+      // Capture image for first color
+      if (currentStep === 0) {
+        updateOpenToast(true);
+        updateTransitionProduct("snapshots");
+      }
+
+      const base64 = gl.domElement.toDataURL("image/webp");
+      addImageProduct({ [currentColor]: base64 });
+      updateSaveStep(currentStep + 1);
+    }
+  };
+
+  useFrame((state, delta) => {
+    if (save) {
+      processColorStep(saveStep, delta);
+    } else {
+      // Apply the current color
+      easing.dampC(materials.lambert1.color, color, 0.2, delta);
+    }
+  });
 
   // Define the area boundaries
   const AREA_X_MIN = -0.14;

@@ -13,10 +13,10 @@ const initialState = {
   },
   colorsSelected: {
     white: true,
-    beige: true,
-    red: true,
-    blue: true,
-    black: true,
+    beige: false,
+    red: false,
+    blue: false,
+    black: false,
   },
   name: "",
   subtitle: "",
@@ -49,12 +49,29 @@ type TimgProduct = {
   black: string;
 };
 
-type TcolorsSelected = {
+export type TcolorsSelected = {
   white: boolean;
   beige: boolean;
   red: boolean;
   blue: boolean;
   black: boolean;
+  "Sport Grey": boolean;
+  Navy: boolean;
+  "Military Green": boolean;
+  Gold: boolean;
+  "Cardinal Red": boolean;
+  "Light Blue": boolean;
+  "Dark Heather": boolean;
+  Orange: boolean;
+  "Light Pink": boolean;
+  Sand: boolean;
+  "Indigo Blue": boolean;
+  "Heather Scarlet Red": boolean;
+  Ash: boolean;
+  Purple: boolean;
+  "Graphite Heather": boolean;
+  "Safety Green": boolean;
+  "Forest Green": boolean;
 };
 
 interface ProductState {
