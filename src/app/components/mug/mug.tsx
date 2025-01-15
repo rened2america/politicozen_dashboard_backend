@@ -130,6 +130,9 @@ export const Mug = (props: any) => {
 
   useFrame((state, delta) => {
     if (save) {
+      setTimeout(() => {        
+        //  WAIITNG FOR PIVOT CONTROLS TO HIDE
+      }, 100);
       switch (saveStep) {
         case 0:
           // Reset to white color

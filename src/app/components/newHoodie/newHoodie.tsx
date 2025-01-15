@@ -175,7 +175,10 @@ export const NewHoodie = (props: any) => {
 
   useFrame((state, delta) => {
     if (save) {
-      processColorStep(saveStep, delta);
+      setTimeout(() => {        
+        //  WAIITNG FOR PIVOT CONTROLS TO HIDE
+        processColorStep(saveStep, delta);
+      }, 100);
     } else{
       // Apply the current color
       easing.dampC(materials.mat0.color, color, 0.2, delta);

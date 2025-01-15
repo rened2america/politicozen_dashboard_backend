@@ -180,7 +180,10 @@ export const Sweatshirt = (props: any) => {
 
   useFrame((state, delta) => {
     if (save) {
-      processColorStep(saveStep, delta);
+      setTimeout(() => {        
+        //  WAIITNG FOR PIVOT CONTROLS TO HIDE
+        processColorStep(saveStep, delta);
+      }, 100);
     } else {
       // Apply the user's selected color when not saving
       easing.dampC(
