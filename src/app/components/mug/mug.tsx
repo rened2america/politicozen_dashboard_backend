@@ -16,10 +16,10 @@ import { easing } from "maath";
 
 const DEFAULT_COLORS = {
   white: "#f0f8ff",
-  beige: "#F3E5AB",
-  red: "#FF0000",
-  blue: "#4169e1",
   black: "#313131",
+  // beige: "#F3E5AB",
+  // red: "#FF0000",
+  // blue: "#4169e1",
 };
 
 export const Mug = (props: any) => {
@@ -85,10 +85,10 @@ export const Mug = (props: any) => {
   useEffect(() => {
     if (
       imagesProduct.white.length > 0 &&
-      imagesProduct.beige.length > 0 &&
-      imagesProduct.red.length > 0 &&
-      imagesProduct.blue.length > 0 &&
       imagesProduct.black.length > 0
+      // imagesProduct.beige.length > 0 &&
+      // imagesProduct.red.length > 0 &&
+      // imagesProduct.blue.length > 0 &&
     ) {
       console.log("Creating Product");
       // console.log(imagesProduct);
@@ -114,18 +114,18 @@ export const Mug = (props: any) => {
       // Reset imagesProduct
       addImageProduct({
         white: "",
-        beige: "",
-        red: "",
-        blue: "",
         black: "",
+        // beige: "",
+        // red: "",
+        // blue: "",
       });
     }
   }, [
     imagesProduct.white,
-    imagesProduct.beige,
-    imagesProduct.red,
-    imagesProduct.blue,
     imagesProduct.black,
+    // imagesProduct.beige,
+    // imagesProduct.red,
+    // imagesProduct.blue,
   ]);
 
   useFrame((state, delta) => {
@@ -154,66 +154,6 @@ export const Mug = (props: any) => {
           }
           break;
         case 1:
-          // Change to beige color
-          updateColor(DEFAULT_COLORS.beige);
-          easing.dampC(
-            materials["Material.001"].color,
-            new THREE.Color(DEFAULT_COLORS.beige),
-            0.2,
-            delta
-          );
-          if (
-            colorsMatch(
-              materials["Material.001"].color,
-              DEFAULT_COLORS.beige
-            )
-          ) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ beige: base64 });
-            updateSaveStep(2);
-          }
-          break;
-        case 2:
-          // Change to red color
-          updateColor(DEFAULT_COLORS.red);
-          easing.dampC(
-            materials["Material.001"].color,
-            new THREE.Color(DEFAULT_COLORS.red),
-            0.2,
-            delta
-          );
-          if (
-            colorsMatch(
-              materials["Material.001"].color,
-              DEFAULT_COLORS.red
-            )
-          ) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ red: base64 });
-            updateSaveStep(3);
-          }
-          break;
-        case 3:
-          // Change to blue color
-          updateColor(DEFAULT_COLORS.blue);
-          easing.dampC(
-            materials["Material.001"].color,
-            new THREE.Color(DEFAULT_COLORS.blue),
-            0.2,
-            delta
-          );
-          if (
-            colorsMatch(
-              materials["Material.001"].color,
-              DEFAULT_COLORS.blue
-            )
-          ) {
-            const base64 = gl.domElement.toDataURL("image/webp");
-            addImageProduct({ blue: base64 });
-            updateSaveStep(4);
-          }
-          break;
-        case 4:
           // Change to black color
           updateColor(DEFAULT_COLORS.black);
           easing.dampC(
@@ -230,10 +170,70 @@ export const Mug = (props: any) => {
           ) {
             const base64 = gl.domElement.toDataURL("image/webp");
             addImageProduct({ black: base64 });
-            updateSaveStep(5);
+            updateSaveStep(2);
           }
           break;
-        case 5:
+        // case 2:
+        //   // Change to red color
+        //   updateColor(DEFAULT_COLORS.red);
+        //   easing.dampC(
+        //     materials["Material.001"].color,
+        //     new THREE.Color(DEFAULT_COLORS.red),
+        //     0.2,
+        //     delta
+        //   );
+        //   if (
+        //     colorsMatch(
+        //       materials["Material.001"].color,
+        //       DEFAULT_COLORS.red
+        //     )
+        //   ) {
+        //     const base64 = gl.domElement.toDataURL("image/webp");
+        //     addImageProduct({ red: base64 });
+        //     updateSaveStep(3);
+        //   }
+        //   break;
+        // case 3:
+        //   // Change to blue color
+        //   updateColor(DEFAULT_COLORS.blue);
+        //   easing.dampC(
+        //     materials["Material.001"].color,
+        //     new THREE.Color(DEFAULT_COLORS.blue),
+        //     0.2,
+        //     delta
+        //   );
+        //   if (
+        //     colorsMatch(
+        //       materials["Material.001"].color,
+        //       DEFAULT_COLORS.blue
+        //     )
+        //   ) {
+        //     const base64 = gl.domElement.toDataURL("image/webp");
+        //     addImageProduct({ blue: base64 });
+        //     updateSaveStep(4);
+        //   }
+        //   break;
+        // case 4:
+        //   // Change to beige color
+        //   updateColor(DEFAULT_COLORS.beige);
+        //   easing.dampC(
+        //     materials["Material.001"].color,
+        //     new THREE.Color(DEFAULT_COLORS.beige),
+        //     0.2,
+        //     delta
+        //   );
+        //   if (
+        //     colorsMatch(
+        //       materials["Material.001"].color,
+        //       DEFAULT_COLORS.beige
+        //     )
+        //   ) {
+        //     const base64 = gl.domElement.toDataURL("image/webp");
+        //     addImageProduct({ beige: base64 });
+        //     updateSaveStep(5);
+        //   }
+        //   break;
+        case 2:
           // All steps completed
           updateSave(false);
           updateResetProductColor(true);

@@ -1,10 +1,10 @@
 export const productColors = {
     mug: {
       white: "white",
-      beige: "#F3E5AB",
-      red: "#FF0000",
-      blue: "#4169e1",
       black: "#313131"
+      // beige: "#F3E5AB",
+      // red: "#FF0000",
+      // blue: "#4169e1",
     },
     shirt: {
       white: "white",
