@@ -28,6 +28,7 @@ export default function ForgotPasswordPage() {
     React.useEffect(() => {
         if (isSuccess) {                    
             alert("Reset link has been sent! Check your email.");
+            router.push("/login")
         }
     }, [isSuccess]);
 

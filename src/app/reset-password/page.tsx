@@ -34,10 +34,8 @@ export default function ResetPasswordPage() {
   // On success, alert + redirect
   React.useEffect(() => {
     if (isSuccess) {
-      alert("Password reset successful! Redirecting to Login...");
-      setTimeout(() => {
+        alert("Password reset successful! Click ok to redirect to Login page...");
         router.push("/login");
-      }, 3000);
     }
   }, [isSuccess, router]);
 
