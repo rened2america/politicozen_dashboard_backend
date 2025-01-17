@@ -10,6 +10,7 @@ import { useUserLogin } from "@/app/login/useUserLogin";
 import { useRouter } from "next/navigation";
 import SyncLoader from "react-spinners/SyncLoader";
 import { z } from "zod";
+import Link from "next/link";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -102,6 +103,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <Button disabled={isLoading}>
             {isLoading ? <SyncLoader loading={isLoading} color="white" /> : "Sign In with Email"}
           </Button>
+          <div className="mt-4">
+            <Link href="/forgot-password" className="text-sm underline">
+              Forgot Password?
+            </Link>
+          </div>
         </div>
       </form>
     </div>

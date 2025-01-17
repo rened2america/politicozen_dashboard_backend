@@ -15,13 +15,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { data, isLoading, mutate: login, isSuccess, isError } = useUserLogin();
-  // const { isSuccess: userIsLogin } = useGetUserIsLogin();
-
-  // useEffect(() => {
-  //   if (userIsLogin) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [userIsLogin]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -32,26 +25,6 @@ export default function Login() {
   const handleSubmit = () => {
     login({ email, password }); // Login api call
   };
-
-  // return (
-  //   <div>
-  //     <form>
-  //       <input
-  //         value={email}
-  //         onChange={(e) => setEmail(e.target.value)}
-  //         type="email"
-  //       />
-  //       <input
-  //         value={password}
-  //         onChange={(e) => setPassword(e.target.value)}
-  //         type="password"
-  //       />
-  //       <button onClick={handleSubmit} type="submit">
-  //         Submit
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
 
   return (
     <>

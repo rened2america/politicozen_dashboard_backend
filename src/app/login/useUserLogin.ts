@@ -6,6 +6,16 @@ type LoginData = {
   password: string;
 };
 
+type ForgotPasswordData = {
+  email: string;  
+};
+
+type ResetPasswordData = {
+  email: string;  
+  password: string;  
+  token: string;  
+};
+
 const postUserData = async (data: LoginData) => {
   const res = await axios.post("auth/login", data).then((res) => {
     return res;
@@ -14,6 +24,31 @@ const postUserData = async (data: LoginData) => {
   return res;
 };
 
+const postForgotPassword = async (data: ForgotPasswordData) => {
+  const res = await axios.post("auth/requestPasswordReset", data).then((res) => {
+    return res;
+  });
+
+  return res;
+};
+
+const postResetPassword = async (data: ResetPasswordData) => {
+  const res = await axios.post("auth/resetPassword", data).then((res) => {
+    return res;
+  });
+
+  return res;
+};
+
+
 export const useUserLogin = () => {
   return useMutation((data: LoginData) => postUserData(data), {});
+};
+
+export const useForgotPassword = () => {
+  return useMutation((data: ForgotPasswordData) => postForgotPassword(data), {});
+};
+
+export const useResetPassword = () => {
+  return useMutation((data: ResetPasswordData) => postResetPassword(data), {});
 };
