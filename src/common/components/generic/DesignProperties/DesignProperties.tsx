@@ -172,6 +172,7 @@ export const DesignProperties = () => {
           padding: "0 8px",
           width: "100%",
         }}
+        className="max-h-[calc(100vh-13rem)]"
       >
         <div
           style={{

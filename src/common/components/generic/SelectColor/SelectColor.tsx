@@ -21,7 +21,7 @@ export const SelectColor = () => {
   return (
     <MenuPropertiesLayout>
       <MenuPropertiesLayoutTitle>Select Colors</MenuPropertiesLayoutTitle>
-      <div className="px-2 max-h-[calc(100vh-12rem)] overflow-y-auto">
+      <div className="px-2 max-h-[calc(100vh-13rem)] overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         {Object.entries(availableColors).map(([colorKey, hexValue]) => (
           <CardColor
             key={colorKey}

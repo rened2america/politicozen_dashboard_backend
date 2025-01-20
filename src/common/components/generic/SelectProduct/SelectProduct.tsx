@@ -36,7 +36,7 @@ export const SelectProduct = () => {
   return (
     <MenuPropertiesLayout>
       <MenuPropertiesLayoutTitle>Product</MenuPropertiesLayoutTitle>
-      <div className="grid grid-rows-[1fr_232px] overflow-y-auto cust-scroll p-4" style={{ scrollbarWidth: 'thin' }}>
+      <div className="grid grid-rows-[1fr_232px] max-h-[calc(100vh-13rem)] overflow-y-auto p-4" style={{ scrollbarWidth: 'thin' }}>
         <div className="grid grid-rows-[32px_72px_120px_1fr] justify-items-center w-full items-center gap-8">
           <div className="p-4">Properties</div>
           <div className="grid justify-items-start w-full ">
