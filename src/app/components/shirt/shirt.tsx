@@ -15,7 +15,7 @@ import { easing } from "maath";
 import { getAvailableColors } from "@/common/constants/allColors";
 //@ts-nocheck
 
-const DEFAULT_COLORS = getAvailableColors("sweatshirt");
+const DEFAULT_COLORS = getAvailableColors("t-shirt");
 console.log("DEFAULT_COLORS: ", DEFAULT_COLORS)
 // Color sequence for processing
 const COLOR_SEQUENCE = Object.entries(DEFAULT_COLORS).map(([key]) => key);

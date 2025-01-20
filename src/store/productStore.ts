@@ -130,7 +130,7 @@ interface ProductState {
 
 export const minimumPrices: Record<string, number> = {
   Sweatshirt: 25.99,
-  Shirt: 15.99,
+  "T-Shirt": 15.99,
   Hoodie: 36.99,
   Mug: 24.99,
 };

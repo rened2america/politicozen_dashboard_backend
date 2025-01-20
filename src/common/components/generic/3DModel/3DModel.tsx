@@ -40,7 +40,7 @@ export const Model = () => {
       <directionalLight intensity={0.5} position={[10, 10, 10]} />
       <Environment preset="city" />
       <Suspense fallback={<Loading />}>
-        {selectModel === "Shirt" ? (
+        {selectModel === "T-Shirt" ? (
           <Object3D />
         ) : selectModel === "Hoodie" ? (
           <NewHoodie />

@@ -102,10 +102,10 @@ export const SelectProduct = () => {
           <div>Select Product</div>
           <div className="grid grid-cols-2 grid-rows-2  items-center justify-items-center gap-4">
             <div
-              className={`border ${selectModel === "Shirt" ? "border-black" : "border-none"} w-[100%] h-[100%] grid items-center justify-items-center rounded-lg`}
-              onClick={() => updateSelectModel("Shirt")}
+              className={`border ${selectModel === "T-Shirt" ? "border-black" : "border-none"} w-[100%] h-[100%] grid items-center justify-items-center rounded-lg`}
+              onClick={() => updateSelectModel("T-Shirt")}
             >
-              <Image width={80} height={80} src="/shirtModel.png" alt="Shirt" />
+              <Image width={80} height={80} src="/shirtModel.png" alt="T-Shirt" />
             </div>
             <div
               className={`border ${selectModel === "Hoodie" ? "border-black" : "border-none"} w-[100%] h-[100%] grid items-center justify-items-center rounded-lg`}

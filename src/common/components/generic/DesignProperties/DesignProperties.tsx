@@ -82,7 +82,7 @@ export const DesignProperties = () => {
   const MIN_SCALE = selectedModel === "Mug" ? 0.03 : 0.1
   let maxScale = 0.3;
   
-  if(selectedModel == "Shirt"){    
+  if(selectedModel == "T-Shirt"){    
     AREA_X_MIN = -0.14;
     AREA_X_MAX = 0.14;
     AREA_Y_MIN = -0.29;

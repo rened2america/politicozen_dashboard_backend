@@ -6,7 +6,7 @@ export const productColors = {
       // red: "#FF0000",
       // blue: "#4169e1",
     },
-    shirt: {
+    "t-shirt": {
       white: "white",
       beige: "#F3E5AB",
       red: "#FF0000",
