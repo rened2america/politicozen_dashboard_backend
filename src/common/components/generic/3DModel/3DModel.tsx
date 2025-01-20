@@ -30,7 +30,7 @@ export const Model = () => {
       camera={{
         position: [0, 0, 2.5],
         fov: 25,
-        zoom: 500,
+        zoom: 600,
       }}
       style={{ background: "#f2f4f7" ,
         borderRadius: "32px "}}
